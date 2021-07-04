@@ -1,7 +1,7 @@
 buildscript {
     repositories {
         // Keep this for testing dev versions of the lazybones-templates plugin
-//        mavenCentral()
+//         mavenCentral()
 //        mavenLocal()
     }
 
