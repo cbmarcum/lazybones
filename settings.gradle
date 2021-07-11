@@ -8,7 +8,7 @@ pluginManagement {
 // The plugin is build separately because these 2 other projects depend on it as a 'plugin'
 include "lazybones-templates", "lazybones-app"
 
-rootProject.name = "lazybones"
+rootProject.name = "skeletor"
 
 // Change names of build files in sub-projects for easier navigation in IDEs
 // and text editors.
