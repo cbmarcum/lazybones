@@ -55,7 +55,7 @@ USAGE: help <cmd>?
     }
 
     protected void showGenericHelp(Configuration config) {
-        println "Lazybones is a command-line based tool for creating basic software projects from templates."
+        println "Skeletor is a command-line based tool for creating basic software projects from templates."
         println ""
         println "Available commands:"
         println ""
