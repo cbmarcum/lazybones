@@ -1,10 +1,17 @@
-Lazybones Project Creation Tool
+Skeletor Project Creation Tool
 ===============================
+Skeletor is fork of the popular [Lazybones](https://github.com/pledbrook/lazybones) 
+project created by Peter Ledbrook. Though unmaintained for some time, Lazybones 
+continued to be used by other projects as a means to generate project layouts 
+from templates and it was distributed on [SDKMAN](https://sdkman.io/) which made it 
+more convenient to install and use. This came to an end with the [shutdown of Bintray.](https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/)
+ Since this is where the application binaries and "built-in" templates lived and 
+SDKMAN stopped distribution as the binaries were no longer available.
 
-Lazybones was born out of frustration that [Ratpack](https://ratpack.io)
-does not and will not have a command line tool that will bootstrap a project.
-It's a good decision for Ratpack, but I'm lazy and want tools to do the boring
-stuff for me.
+My goal is to get Skeletor updated and distributed on SDKMAN. As that is not the 
+case yet, I'll document the manual installation process as well.
+
+The following content is updated from the original docs... (Work in progress!!)
 
 The tool is very simple: it allows you to create a new project structure for
 any framework or library for which the tool has a template. You can even
@@ -17,15 +24,21 @@ does for web applications. Lazybones also includes a subtemplates feature that
 resembles the behaviour of Yeoman's sub-generators, allowing you to generate optional
 extras (controllers, scaffolding etc.) inside a project.
 
-[![Build Status](https://travis-ci.org/pledbrook/lazybones.svg?branch=master)](https://travis-ci.org/pledbrook/lazybones)
+## Skeletor Developer
 
-## Developers
+* [Carl Marcum](https://github.com/cbmarcum)
+
+## Skeletor Contributor
+
+* [Osian Hughes](https://github.com/osh-onstructive)
+
+## Lazybones Developers
 
 * [Peter Ledbrook](https://github.com/pledbrook)
 * [Kyle Boon](https://github.com/kyleboon)
 * [Tommy Barker](https://github.com/tbarker9)
 
-## Contributors
+## Lazybones Contributors
 
 * [Luke Daley](https://github.com/alkemist)
 * [Tomas Lin](https://github.com/tomaslin)
@@ -36,11 +49,7 @@ extras (controllers, scaffolding etc.) inside a project.
 
 ## Running it
 
-Grab lazybones from [sdkman](http://sdkman.io/) (formerly gvm):
-
-    sdk install lazybones
-
-or alternatively, grab the distribution [from Bintray](https://bintray.com/pkg/show/general/pledbrook/lazybones-templates/lazybones),
+Grab the distribution [from our JFrog repo](https://codebuilders.jfrog.io/artifactory/default-generic-local/skeletor-app),
 unpack it to a local directory, and then add its 'bin' directory to your `PATH`
 environment variable.
 
@@ -48,12 +57,12 @@ environment variable.
 
 To create a new project, run
 
-    lazybones create <template name> <template version> <target directory>
+    skeletor create <template name> <template version> <target directory>
 
 So if you wanted to create a skeleton Ratpack project in a new 'my-rat-app'
 directory you would run
 
-    lazybones create ratpack 1.2.0 my-rat-app
+    skeletor create ratpack 1.2.0 my-rat-app
     
 The version is optional and if you leave it out, Lazybones will install the
 latest version of the template it can find. 
