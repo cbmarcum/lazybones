@@ -1,15 +1,17 @@
 plugins {
     id 'groovy'
     id 'application'
-    id "uk.co.cacoethes.lazybones-templates" version "1.2.5-SNAPSHOT"
+    id "net.codebuilders.lazybones-templates" version "1.3.0"
     id "io.sdkman.vendors" version "2.0.0"
 }
 
 import uk.co.cacoethes.gradle.tasks.BintrayGenericUpload
 
-applicationName = "lazybones"
+archivesBaseName = 'skeletor-app'
+
+applicationName = "skeletor"
 mainClassName = "uk.co.cacoethes.lazybones.LazybonesMain"
-version = "0.8.4-SNAPSHOT"
+version = "0.9.0-SNAPSHOT"
 
 // These settings mimic the old client VM behavior. Should result in faster startup.
 applicationDefaultJvmArgs = ["-XX:+TieredCompilation", "-XX:TieredStopAtLevel=1", "-XX:CICompilerCount=3"]
@@ -74,7 +76,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes("Implementation-Title": "Lazybones", "Implementation-Version": project.version)
+        attributes("Implementation-Title": "Skeletor", "Implementation-Version": project.version)
     }
 }
 
