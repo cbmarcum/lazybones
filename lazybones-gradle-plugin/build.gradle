@@ -1,9 +1,5 @@
 /* build with:
-* ./gradlew publish (this pushed to nexus staging repo also)
-* nexus-plugin docs say to use:
-* ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
-* or:
-* ./gradlew publishToSonatype closeSonatypeStagingRepository
+* ./gradlew publish
 * or to publish locally
 * ./gradlew publishToMavenLocal
 *
@@ -16,7 +12,6 @@ plugins {
     id 'java-gradle-plugin'
     id 'groovy'
     id 'signing'
-    id "io.github.gradle-nexus.publish-plugin" version "1.1.0"
 }
 
 // ignored by publish but used with jar task alone
@@ -57,58 +52,79 @@ java {
   * don't create two publications by using gradle plugin and maven publish.
   * https://github.com/gradle/gradle/issues/10384 */
 publishing {
-    publications {
-        pluginMaven(MavenPublication) {
-            artifactId = 'skeletor-gradle'
-            // from components.java
 
-            // versionMapping placeholder
+    afterEvaluate {
 
-            pom {
-                name = 'Skeletor Gradle Plugin'
-                packaging = 'jar'
-                description = 'Skeletor - a Gradle plugin for Lazybones templates'
-                url = 'http://codebuilders.net'
-                inceptionYear = '2016'
+        publications {
 
-                scm {
-                    url = 'https://github.com/cbmarcum/mybusiness'
-                    developerConnection = 'https://github.com/cbmarcum/mybusiness'
-                    connection = 'https://github.com/cbmarcum/mybusiness'
-                }
+            withType(MavenPublication) {
+                // customize all publications here
+                pom {
 
-                licenses {
-                    license {
-                        name = 'The Apache Software License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                        distribution = 'repo'
+                    packaging = 'jar'
+                    description = 'Skeletor - a Gradle plugin for Lazybones templates'
+                    url = 'http://codebuilders.net'
+                    inceptionYear = '2016'
+
+                    scm {
+                        url = 'https://github.com/cbmarcum/mybusiness'
+                        developerConnection = 'https://github.com/cbmarcum/mybusiness'
+                        connection = 'https://github.com/cbmarcum/mybusiness'
+                    }
+
+                    licenses {
+                        license {
+                            name = 'The Apache Software License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution = 'repo'
+                        }
+                    }
+
+                    developers {
+                        // Original Lazybones developers
+                        developer {
+                            name = 'Peter Ledbrook'
+                        }
+                        developer {
+                            name = 'Kyle Boon'
+                        }
+                        developer {
+                            name = 'Tommy Barker'
+                        }
+                        // Skeletor fork
+                        developer {
+                            name = 'Carl Marcum'
+                            email = 'carl.marcum@codebuilders.net'
+                            url = 'http://codebuilders.net'
+                            organization = 'Code Builders, LLC'
+                            organizationUrl = 'http://codebuilders.net'
+
+                        }
                     }
                 }
 
-                developers {
-                    // Original Lazybones developers
-                    developer {
-                        name = 'Peter Ledbrook'
-                    }
-                    developer {
-                        name = 'Kyle Boon'
-                    }
-                    developer {
-                        name = 'Tommy Barker'
-                    }
-                    // Skeletor fork
-                    developer {
-                        name = 'Carl Marcum'
-                        email = 'carl.marcum@codebuilders.net'
-                        url = 'http://codebuilders.net'
-                        organization = 'Code Builders, LLC'
-                        organizationUrl = 'http://codebuilders.net'
+            }
 
-                    }
+            pluginMaven {
+                // customize main publications here
+                artifactId = 'skeletor-gradle'
+                // from components.java
+                // versionMapping placeholder
+                pom {
+                    name = 'Skeletor Gradle Plugin main artifact'
+                }
+            } // pluginMaven
+
+            autoUpdatePluginMarkerMaven {
+                pom {
+                    name = 'Skeletor Gradle Plugin marker artifact'
                 }
             }
-        }
-    }
+
+
+        } // publications
+
+    } // afterEvaluate
 
     repositories {
         maven {
@@ -127,21 +143,6 @@ signing {
     // sign publishing.publications.pluginMaven
     sign publishing.publications
     // sign configurations.archives
-}
-
-nexusPublishing {
-    repositories {
-        sonatype {
-            def ossUser = System.getenv("SONATYPE_USERNAME") ?: project.hasProperty("sonatypeOssUsername") ? project.sonatypeOssUsername : ''
-            def ossPass = System.getenv("SONATYPE_PASSWORD") ?: project.hasProperty("sonatypeOssPassword") ? project.sonatypeOssPassword : ''
-            def ossStagingProfileId = System.getenv("SONATYPE_STAGING_PROFILE_ID") ?: project.hasProperty("sonatypeOssStagingProfileId") ? project.sonatypeOssStagingProfileId : ''
-            // nexusUrl = uri("https://s01.oss.sonatype.org/service/local/")
-            // snapshotRepositoryUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-            username = ossUser
-            password = ossPass
-            stagingProfileId = ossStagingProfileId
-        }
-    }
 }
 
 gradlePlugin {
