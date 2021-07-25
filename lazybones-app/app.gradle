@@ -11,7 +11,7 @@ archivesBaseName = 'skeletor-app'
 
 applicationName = "skeletor"
 mainClassName = "uk.co.cacoethes.lazybones.LazybonesMain"
-version = "0.9.0"
+version = "0.9.1"
 
 // These settings mimic the old client VM behavior. Should result in faster startup.
 applicationDefaultJvmArgs = ["-XX:+TieredCompilation", "-XX:TieredStopAtLevel=1", "-XX:CICompilerCount=3"]
@@ -52,13 +52,15 @@ dependencies {
     implementation "org.codehaus.groovy:groovy:${groovyVersion}"
     implementation "org.codehaus.groovy:groovy-all:${groovyVersion}"
 
-    implementation "commons-io:commons-io:2.4",
-            "org.codehaus.groovy:groovy-json:${groovyVersion}",
-            "org.codehaus.groovy:groovy-templates:${groovyVersion}",
-            "org.apache.commons:commons-compress:1.5",
-            "com.github.groovy-wslite:groovy-wslite:1.1.2",
-            "net.sf.jopt-simple:jopt-simple:4.4",
-            "org.ini4j:ini4j:0.5.2"
+    implementation "commons-io:commons-io:2.7"
+    implementation "org.codehaus.groovy:groovy-json:${groovyVersion}"
+    implementation "org.codehaus.groovy:groovy-templates:${groovyVersion}"
+    implementation "org.apache.commons:commons-compress:1.5"
+    implementation "com.github.groovy-wslite:groovy-wslite:1.1.2"
+    implementation "net.sf.jopt-simple:jopt-simple:4.4"
+    implementation "org.ini4j:ini4j:0.5.2"
+
+    implementation "com.opencsv:opencsv:5.5.1"
 
     runtimeOnly "org.apache.ivy:ivy:2.3.0"
 
@@ -67,7 +69,7 @@ dependencies {
     }
 
     integTestImplementation "org.codehaus.groovy:groovy-all:${groovyVersion}",
-                     "commons-io:commons-io:2.4",
+                     "commons-io:commons-io:2.7",
                      "co.freeside:betamax:1.1.2",
                      "org.littleshoot:littleproxy:1.1.0-beta1"
 
