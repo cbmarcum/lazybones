@@ -47,6 +47,7 @@ class Configuration {
                 "options.quiet": Boolean,
                 "options.info": Boolean,
                 "bintrayRepositories": String[],
+                "simpleRepositories": String[],
                 "templates.mappings.*": URI,
                 "systemProp.*": Object]
 
