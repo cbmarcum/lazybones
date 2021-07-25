@@ -4,7 +4,8 @@ import groovy.util.logging.Log
 import joptsimple.OptionParser
 import joptsimple.OptionSet
 import uk.co.cacoethes.lazybones.config.Configuration
-import uk.co.cacoethes.lazybones.packagesources.BintrayPackageSource
+// import uk.co.cacoethes.lazybones.packagesources.BintrayPackageSource
+import uk.co.cacoethes.lazybones.packagesources.SimplePackageSource
 import wslite.http.HTTPClientException
 
 import java.util.logging.Level
@@ -52,7 +53,7 @@ USAGE: list
     @Override
     protected int doExecute(OptionSet optionSet, Map globalOptions, Configuration config) {
 
-        def remoteTemplates = fetchRemoteTemplates(config.getSetting("bintrayRepositories"))
+        def remoteTemplates = fetchRemoteTemplates(config.getSetting("simpleRepositories"))
 
         boolean offline = false
         if (!optionSet.hasOptions()) {
@@ -132,18 +133,18 @@ USAGE: list
         println()
     }
 
-    protected Map<String, Object> fetchRemoteTemplates(Collection<String> bintrayRepositories) {
-        bintrayRepositories.collectEntries { String repoName ->
+    protected Map<String, Object> fetchRemoteTemplates(Collection<String> repositories) {
+        repositories.collectEntries { String repoName ->
             [repoName, fetchPackageNames(repoName)]
         }
     }
 
     protected fetchPackageNames(String repoName) {
         try {
-            def pkgSource = new BintrayPackageSource(repoName)
+            def pkgSource = new SimplePackageSource(repoName)
             return pkgSource.listPackageNames().sort()
         }
-        catch (HTTPClientException ex) {
+        catch (IOException ex) {
             return ex.cause
         }
     }

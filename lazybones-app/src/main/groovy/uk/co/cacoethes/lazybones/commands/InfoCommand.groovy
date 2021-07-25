@@ -4,7 +4,8 @@ import groovy.transform.CompileStatic
 import groovy.util.logging.Log
 import joptsimple.OptionSet
 import uk.co.cacoethes.lazybones.config.Configuration
-import uk.co.cacoethes.lazybones.packagesources.BintrayPackageSource
+import uk.co.cacoethes.lazybones.packagesources.BintrayPackageSource // TODO: remove BintrayPackageSource import
+import uk.co.cacoethes.lazybones.packagesources.SimplePackageSource
 import uk.co.cacoethes.lazybones.NoVersionsFoundException
 import uk.co.cacoethes.lazybones.PackageInfo
 import wslite.http.HTTPClientException
@@ -44,14 +45,14 @@ USAGE: info <template>
     int doExecute(OptionSet cmdOptions,  Map globalOptions, Configuration config) {
         String packageName = cmdOptions.nonOptionArguments()[0]
 
-        log.info "Fetching package information for '${packageName}' from Bintray"
+        log.info "Fetching package information for '${packageName}' from repo"
 
         // grab the package from the first repository that has it
         PackageInfo pkgInfo
         try {
-            pkgInfo = findPackageInBintrayRepositories(
+            pkgInfo = findPackageInSimpleRepositories(
                     packageName,
-                    config.getSetting("bintrayRepositories") as List<String>)
+                    config.getSetting("simpleRepositories") as List<String>)
         }
         catch (NoVersionsFoundException ex) {
             log.severe "No version of '${packageName}' has been published"
@@ -93,9 +94,19 @@ USAGE: info <template>
         return 0
     }
 
+    @Deprecated
     protected PackageInfo findPackageInBintrayRepositories(String pkgName, Collection<String> repositories) {
         for (String bintrayRepoName in repositories) {
             def pkgInfo = new BintrayPackageSource(bintrayRepoName).fetchPackageInfo(pkgName)
+            if (pkgInfo) return pkgInfo
+        }
+
+        return null
+    }
+
+    protected PackageInfo findPackageInSimpleRepositories(String pkgName, Collection<String> repositories) {
+        for (String simpleRepoName in repositories) {
+            def pkgInfo = new SimplePackageSource(simpleRepoName).fetchPackageInfo(pkgName)
             if (pkgInfo) return pkgInfo
         }
 
