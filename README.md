@@ -28,9 +28,10 @@ extras (controllers, scaffolding etc.) inside a project.
 
 * [Carl Marcum](https://github.com/cbmarcum)
 
-## Skeletor Contributor
+## Skeletor Contributors
 
 * [Osian Hughes](https://github.com/osh-onstructive)
+* [Dónal Murtagh](https://github.com/donalmurtagh)
 
 ## Lazybones Developers
 
