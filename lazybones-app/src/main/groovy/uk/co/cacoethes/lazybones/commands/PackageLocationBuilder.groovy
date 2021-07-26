@@ -23,16 +23,37 @@ class PackageLocationBuilder {
             return buildForUrl(packageName)
         }
 
-        buildForBintray(packageName, version, packageSources)
+        buildForSimple(packageName, version, packageSources)
     }
 
     private PackageLocation buildForUrl(String url) {
         def packageName = FilenameUtils.getBaseName(new URI(url).path)
-
+        log.fine("entered buildForUrl")
+        log.fine("url = ${url}")
         return new PackageLocation(remoteLocation: url, cacheLocation: cacheLocationPattern(packageName, null))
     }
 
+    @Deprecated
     private PackageLocation buildForBintray(String packageName, String version, List<PackageSource> packageSources) {
+        log.fine("entered buildForBintray")
+        if (version) {
+            String cacheLocation = cacheLocationPattern(packageName, version)
+            File cacheFile = new File(cacheLocation)
+            if (cacheFile.exists()) {
+                return new PackageLocation(cacheLocation: cacheLocation)
+            }
+        }
+
+        PackageInfo packageInfo = getPackageInfo(packageName, packageSources)
+        String versionToDownload = version ?: packageInfo.latestVersion
+        String cacheLocation = cacheLocationPattern(packageName, versionToDownload)
+        String remoteLocation = packageInfo.source.getTemplateUrl(packageInfo.name, versionToDownload)
+
+        return new PackageLocation(remoteLocation: remoteLocation, cacheLocation: cacheLocation)
+    }
+
+    private PackageLocation buildForSimple(String packageName, String version, List<PackageSource> packageSources) {
+        log.fine("entered buildForSimple")
         if (version) {
             String cacheLocation = cacheLocationPattern(packageName, version)
             File cacheFile = new File(cacheLocation)
