@@ -28,8 +28,6 @@ import java.net.URLEncoder
 @Log
 class SimplePackageSource implements PackageSource {
 
-    // static final String TEMPLATE_BASE_URL = "http://dl.bintray.com/v1/content/"
-    // static final String API_BASE_URL = "https://bintray.com/api/v1"
     static final String PACKAGE_SUFFIX = "-template"
 
     final String repoName
@@ -160,7 +158,8 @@ class SimplePackageSource implements PackageSource {
      * Returns the URL to download particular package and version from this package source
      */
     String getTemplateUrl(String pkgName, String version) {
-        // TODO: implement getTemplateUrl method
-        return null
+        // TODO: may need fixed for windows file urls unless we can use forward slash with java like ant
+        String url = "${repoName}/${pkgName}${PACKAGE_SUFFIX}-${version}.zip"
+        return url
     }
 }
