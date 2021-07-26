@@ -5,8 +5,7 @@ import groovy.util.logging.Log
 import uk.co.cacoethes.lazybones.PackageNotFoundException
 
 /**
- * Handles the retrieval of template packages from Bintray (or other supported
- * repositories).
+ * Handles the retrieval of template packages from supported repositories.
  */
 @CompileStatic
 @Log

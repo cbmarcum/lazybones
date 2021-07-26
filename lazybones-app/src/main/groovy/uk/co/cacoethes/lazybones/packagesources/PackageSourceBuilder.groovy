@@ -15,7 +15,7 @@ class PackageSourceBuilder {
      * @return
      */
     List<PackageSource> buildPackageSourceList(Configuration config) {
-        List<String> repositoryList = (List) config.getSetting("bintrayRepositories")
-        return repositoryList.collect { new BintrayPackageSource(it) }
+        List<String> repositoryList = (List) config.getSetting("simpleRepositories")
+        return repositoryList.collect { new SimplePackageSource(it) }
     }
 }
