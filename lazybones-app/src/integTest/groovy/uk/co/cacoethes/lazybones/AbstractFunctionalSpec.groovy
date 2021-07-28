@@ -5,7 +5,7 @@ import org.apache.commons.io.FilenameUtils
 import spock.lang.Specification
 
 /**
- * The super class for all functional tests. It provides support for running lazybones
+ * The super class for all functional tests. It provides support for running skeletor
  * as an external process and retrieving its output.
  */
 abstract class AbstractFunctionalSpec extends Specification {
@@ -31,13 +31,13 @@ abstract class AbstractFunctionalSpec extends Specification {
     }
 
     /**
-     * Runs a lazybones command. For example:
+     * Runs a skeletor command. For example:
      *
      * <pre>runCommand(["create", "ratpack", "0.1", "ratapp"], baseWorkDir)</pre>
      *
      * It will look for lazybones in either the directory specified by the
      * {@code lazybones.installDir} system property, or {cwd}/build/install. It will
-     * also pass in the current PATH environment variable to the lazybones process if
+     * also pass in the current PATH environment variable to the skeletor process if
      * {@code env} doesn't contain such a variable itself.
      * @param cmdList The command line to test, as a list.
      * @param workDir The directory to run the command in. In other words, this becomes
@@ -56,8 +56,8 @@ abstract class AbstractFunctionalSpec extends Specification {
         workDir.mkdirs()
 
         def lazybonesInstallDir = System.getProperty("lazybones.installDir") ?:
-                System.getProperty("user.dir") + "/build/install/lazybones"
-        def lzbExecutable = FilenameUtils.concat(lazybonesInstallDir, "bin/lazybones")
+                System.getProperty("user.dir") + "/build/install/skeletor"
+        def lzbExecutable = FilenameUtils.concat(lazybonesInstallDir, "bin/skeletor")
         if (windows) {
             lzbExecutable = FilenameUtils.separatorsToWindows(lzbExecutable + ".bat")
         }
@@ -142,7 +142,7 @@ abstract class AbstractFunctionalSpec extends Specification {
 
     protected final String getConfigFilePath() {
         return System.getProperty("lazybones.config.file") ?:
-                FilenameUtils.concat(System.getProperty('user.home'), ".lazybones/config.groovy")
+                FilenameUtils.concat(System.getProperty('user.home'), ".skeletor/config.groovy")
     }
 
     protected final String getJsonConfigFilePath() {
