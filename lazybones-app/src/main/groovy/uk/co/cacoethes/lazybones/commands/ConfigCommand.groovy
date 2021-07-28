@@ -8,11 +8,11 @@ import uk.co.cacoethes.lazybones.config.InvalidSettingException
 import uk.co.cacoethes.lazybones.config.UnknownSettingException
 
 /**
- * <p>This Lazybones command allows users to interact with the configuration settings
+ * <p>This Skeletor command allows users to interact with the configuration settings
  * via the command line. To do this, it works with a managed JSON configuration
  * file and has knowledge of what settings are supported by the application. It's
  * important to understand that any settings in the standard user configuration
- * file (~/.lazybones/config.groovy) take precedence over those in the JSON config.
+ * file (~/.skeletor/config.groovy) take precedence over those in the JSON config.
  * Fortunately the `set` and `add` sub-commands warn the user when they try to
  * modify a setting that is overridden in this way.<p>
  */
@@ -28,7 +28,7 @@ USAGE: config set <option> <value> [<value> ...]
   where  set    = Changes or initialises the value of a named setting.
          add    = Adds a new value to an array setting.
          clear  = Removes a named setting such that its default value will be
-                  used by Lazybones.
+                  used by Skeletor.
          show   = Displays the current value of a named setting.
          list   = Displays all available configuration settings and their
                   types.
@@ -257,7 +257,7 @@ USAGE: config set <option> <value> [<value> ...]
 
     /**
      * <p>Implements the `config list` command, displaying all the available
-     * configuration settings supported by Lazybones.</p>
+     * configuration settings supported by Skeletor.</p>
      * @param optionSet The command options from JOptSimple, including the
      * `list` as the first non-option argument.
      * @return An exit code. 0 means the command successfully completed, while
@@ -270,7 +270,7 @@ USAGE: config set <option> <value> [<value> ...]
             int max, String key -> Math.max(key.size(), max)
         } + 3
 
-        println "Valid Lazybones configuration settings:"
+        println "Valid Skeletor configuration settings:"
         println()
         for (Map.Entry setting in validSettings) {
             println INDENT + setting.key.padRight(columnWidth) + setting.value.simpleName

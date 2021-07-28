@@ -12,8 +12,8 @@ import uk.co.cacoethes.util.ArchiveMethods
 import java.util.logging.Level
 
 /**
- * Implements Lazybone's generate command, which processes subtemplates in a
- * Lazybones-created project. The command unpacks the subtemplate into the
+ * Implements Skeletor's generate command, which processes subtemplates in a
+ * Skeletor-created project. The command unpacks the subtemplate into the
  * project's .lazybones directory and runs the post-install script. It's up
  * to that script to create directories and files in main project source tree.
  */
@@ -59,7 +59,7 @@ USAGE: generate <template>
         // Make sure this is a Lazybones-created project, otherwise there are
         // no subtemplates to use.
         if (!LAZYBONES_DIR.exists()) {
-            log.severe "You cannot use `generate` here: this is not a Lazybones-created project"
+            log.severe "You cannot use `generate` here: this is not a Skeletor-created project"
             return 1
         }
 
