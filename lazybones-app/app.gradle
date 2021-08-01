@@ -21,7 +21,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 ext {
     groovyVersion = "2.4.15"
-    cachePath = new File(System.getProperty("user.home"), ".lazybones/templates").absolutePath
+    cachePath = new File(System.getProperty("user.home"), ".skeletor/templates").absolutePath
     isCiBuild = System.getProperty("drone.io") as boolean
     testWorkDir = file("$buildDir/testWork").path
 }

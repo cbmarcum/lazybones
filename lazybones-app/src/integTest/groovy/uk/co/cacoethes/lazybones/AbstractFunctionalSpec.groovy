@@ -35,7 +35,7 @@ abstract class AbstractFunctionalSpec extends Specification {
      *
      * <pre>runCommand(["create", "ratpack", "0.1", "ratapp"], baseWorkDir)</pre>
      *
-     * It will look for lazybones in either the directory specified by the
+     * It will look for skeletor in either the directory specified by the
      * {@code lazybones.installDir} system property, or {cwd}/build/install. It will
      * also pass in the current PATH environment variable to the skeletor process if
      * {@code env} doesn't contain such a variable itself.
@@ -45,7 +45,7 @@ abstract class AbstractFunctionalSpec extends Specification {
      * @param inputs A list of input strings to pass to the process if it needs them.
      * These could be simple "y" or "n" strings to answer such questions, or something
      * larger.
-     * @return The exit code of the lazybones process.
+     * @return The exit code of the skeletor process.
      */
     int runCommand(List cmdList, File workDir, List inputs = [], boolean clearPrevious = true) {
         if (clearPrevious) {
@@ -128,7 +128,7 @@ abstract class AbstractFunctionalSpec extends Specification {
     }
 
     /**
-     * Reads the current version of Lazybones from a properties file and
+     * Reads the current version of Skeletor from a properties file and
      * returns it as a string.
      */
     protected String readLazybonesVersion() {
@@ -137,7 +137,7 @@ abstract class AbstractFunctionalSpec extends Specification {
 
     protected final String getCacheDirPath() {
         return System.getProperty("lazybones.cache.dir") ?:
-                FilenameUtils.concat(System.getProperty('user.home'), ".lazybones/templates")
+                FilenameUtils.concat(System.getProperty('user.home'), ".skeletor/templates")
     }
 
     protected final String getConfigFilePath() {

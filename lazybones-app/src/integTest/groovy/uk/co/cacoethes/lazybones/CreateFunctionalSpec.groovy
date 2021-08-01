@@ -11,25 +11,25 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         initProxy(recorder.proxy.address())
     }
 
-    @Betamax(tape="create-tape")
+    // @Betamax(tape="create-tape")
     def "Create command installs a packaged template"() {
-        when: "I run lazybones with the create command for the ratpack template"
-        def exitCode = runCommand(["create", "ratpack", "0.1", "ratapp"], baseWorkDir)
+        when: "I run skeletor with the create command for the aoo-addin template"
+        def exitCode = runCommand(["create", "aoo-addin", "0.3.0", "test-addin"], baseWorkDir)
 
         then: "It unpacks the template, retaining file permissions"
         exitCode == 0
 
-        def appDir = new File(baseWorkDir, "ratapp")
+        def appDir = new File(baseWorkDir, "test-addin")
         appDir.exists()
         new File(appDir, "gradlew").canExecute()
         new File(appDir, "src/main/groovy").isDirectory()
-        new File(appDir, "src/ratpack/public/index.html").isFile()
+        new File(appDir, "src/main/groovy/README.md").isFile()
 
         and: "It says that the given version of the package is being installed in the target directory"
-        output =~ /Creating project from template ratpack 0.1 in 'ratapp'/
+        output =~ /Creating project from template aoo-addin 0.3.0 in 'test-addin'/
     }
 
-    @Betamax(tape="create-tape")
+    // @Betamax(tape="create-tape")
     def "Create command installs latest version of a packaged template if version not specified"() {
         when: "I run lazybones with the create command for the ratpack template"
         def exitCode = runCommand(["create", "ratpack", "ratapp"], baseWorkDir)
@@ -47,7 +47,7 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         output =~ /Creating project from template ratpack \(latest\) in 'ratapp'/
     }
 
-    @Betamax(tape="create-tape")
+    // @Betamax(tape="create-tape")
     def "Post-install script works with multiple asks (#106)"() {
         when: "creating a groovyapp with no pre-defined property values"
         def args = [
@@ -66,7 +66,7 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         text.contains("version = \"1.0-SNAPSHOT\"")
     }
 
-    @Betamax(tape="create-tape")
+    // @Betamax(tape="create-tape")
     def "Post-install script works with include subscripts"() {
         when: "creating a groovyapp with no pre-defined property values"
         def args = [
@@ -89,7 +89,7 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         !new File("$baseWorkDir/my-app", "sub1.groovy").exists()
     }
 
-    @Betamax(tape="create-tape")
+    // @Betamax(tape="create-tape")
     def "Create command installs a template from an HTTP URL"() {
         when: "I run lazybones with the create command using a full URL for the ratpack template"
         def packageUrl = "http://dl.dropboxusercontent.com/u/29802534/custom-ratpack.zip"
@@ -141,7 +141,7 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         output =~ /Creating project from template file:\/.*\/dummy-app.zip \(latest\) in 'mvnapp'/
     }
 
-    @Betamax(tape="create-tape")
+    // @Betamax(tape="create-tape")
     def "Create command installs a packaged template into current directory"() {
         given: "An existing application directory"
         def appDir =  new File(baseWorkDir, "ratapp2")
@@ -161,7 +161,7 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         output =~ /Creating project from template test-tmpl 0.2 in current directory/
     }
 
-    @Betamax(tape="create-tape")
+    // @Betamax(tape="create-tape")
     def "Create command reports error if no version given and package info is not available"() {
         when: "I run lazybones with the create command for an unknown package and no version"
         def exitCode = runCommand(["create", "unknown", "myapp"], baseWorkDir)
@@ -194,7 +194,7 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         !output.contains("Exception")
     }
 
-    @Betamax(tape="create-tape")
+    // @Betamax(tape="create-tape")
     def "Create command reports error if package cannot be found"() {
         when: "I run lazybones with the create command for an unknown package"
         def exitCode = runCommand(["create", "unknown", "1.0", "myapp"], baseWorkDir)
@@ -206,7 +206,7 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         !new File(baseWorkDir, "myapp").exists()
     }
 
-    @Betamax(tape="create-tape")
+    // @Betamax(tape="create-tape")
     def "Create command reports error if specified version of a package cannot be found"() {
         when: "I run lazybones with the create command for an unknown version of a known package"
         def exitCode = runCommand(["create", "ratpack", "99.99", "myapp"], baseWorkDir)
@@ -218,7 +218,7 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         !new File(baseWorkDir, "myapp").exists()
     }
 
-    @Betamax(tape="create-tape")
+    // @Betamax(tape="create-tape")
     def "Create command prints useful error message if no versions of a template are available"() {
         when: "I run lazybones with the create command for a template with no versions"
         def exitCode = runCommand(["create", "lazybones-project", "my-lzb-templates"], baseWorkDir)
@@ -228,7 +228,7 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         output =~ /No version of 'lazybones-project' has been published/
     }
 
-    @Betamax(tape="create-tape")
+    // @Betamax(tape="create-tape")
     def "lazybones creates git repository on --with-git"() {
         given: "The platform line separator"
         def eol = System.getProperty("line.separator")
