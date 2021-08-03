@@ -1,4 +1,4 @@
-# Lazybones Gradle plugin
+# Skeletor Gradle plugin
 
 The mechanics of publishing Lazybones templates is straightforward and could
 be done manually. That doesn't mean it's not a lot of work though. If you want
@@ -18,16 +18,16 @@ to set it up manually in the `buildscript` section of your build file:
     buildscript {
         repositories {
             maven {
-                url "http://dl.bintray.com/pledbrook/plugins"
+                url "https://codebuilders.jfrog.io/artifactory/cb-gradle-release-local/"
             }
         }
     
         dependencies {
-            classpath "uk.co.cacoethes:lazybones-gradle:1.2.5-SNAPSHOT"
+            classpath "net.codebuilders:skeletor-gradle:1.3.1"
         }
     }
 
-	apply plugin: "uk.co.cacoethes.lazybones-templates"
+	apply plugin: "net.codebuilders.lazybones-templates"
 	...
 
 ## Conventions & required configuration

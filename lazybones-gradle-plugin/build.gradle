@@ -67,9 +67,9 @@ publishing {
                     inceptionYear = '2016'
 
                     scm {
-                        url = 'https://github.com/cbmarcum/mybusiness'
-                        developerConnection = 'https://github.com/cbmarcum/mybusiness'
-                        connection = 'https://github.com/cbmarcum/mybusiness'
+                        url = 'https://github.com/cbmarcum/skeletor'
+                        developerConnection = 'https://github.com/cbmarcum/skeletor'
+                        connection = 'https://github.com/cbmarcum/skeletor'
                     }
 
                     licenses {

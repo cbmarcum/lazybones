@@ -11,16 +11,23 @@ SDKMAN stopped distribution as the binaries were no longer available.
 My goal is to get Skeletor updated and distributed on SDKMAN. As that is not the 
 case yet, I'll document the manual installation process as well.
 
+The big changes from Lazybones are: 
+1. The new project name and the application command are both now 'skeletor'
+1. The user profile directory for configurations and template cache is now $USER_HOME/.skeletor
+1. A new URL based repository has been implemented for use by listing and creating projects from it. 
+Publishing to the repository is not yet implemented. Manual steps are trivial and documented below.
+
+Existing Lazybones templates should still work if moved to a URL repository as described below.
+The .lazybones subdirectory created in project templates has been continued here for compatibility purposes.
+This maybe changed in a future major version release.
+
 The following content is updated from the original docs... (Work in progress!!)
 
 The tool is very simple: it allows you to create a new project structure for
-any framework or library for which the tool has a template. You can even
-contribute templates by sending pull requests to this GitHub project or publishing
-the packages to the relevant [Bintray repository](https://bintray.com/repo/browse/pledbrook/lazybones-templates)
-(more info available below).
+any framework or library for which the tool has a template. 
 
-The concept of Lazybones is very similar to Maven archetypes, and what [Yeoman](http://yeoman.io/)
-does for web applications. Lazybones also includes a subtemplates feature that
+The concept of Skeletor is very similar to Maven archetypes, and what [Yeoman](http://yeoman.io/)
+does for web applications. Skeletor also includes a subtemplates feature that
 resembles the behaviour of Yeoman's sub-generators, allowing you to generate optional
 extras (controllers, scaffolding etc.) inside a project.
 
@@ -65,7 +72,7 @@ directory you would run
 
     skeletor create ratpack 1.2.0 my-rat-app
     
-The version is optional and if you leave it out, Lazybones will install the
+The version is optional and if you leave it out, Skeletor will install the
 latest version of the template it can find. 
 
 Named templates are all stored on Bintray. By default, Lazybones searches for
@@ -165,25 +172,25 @@ so there can only be one version available to you.
 
 To see what templates you can install, run
 
-    lazybones list
+    skeletor list
  
 This will list all aliases and remote templates. If you want to see what
 templates you have cached locally, run
 
-    lazybones list --cached
+    skeletor list --cached
 
 In fact, `--cached` is implied if Lazybones can't connect to the internet.
 
 You can also find out more about a template through the `info` command:
 
-    lazybones info <template name>
+    skeletor info <template name>
 
 This will print a description of the template and what versions are available
 for it. If you're offline, this will simply display an error message.
 
 ## Configuration
 
-Lazybones will run out of the box without any extra configuration, but the tool
+Skeletor will run out of the box without any extra configuration, but the tool
 does allow you to override the default behaviour via a fixed set of configuration
 options. These options can be provided in a number of ways following a set order
 of precedence:
