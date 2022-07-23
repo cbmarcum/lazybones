@@ -57,9 +57,55 @@ extras (controllers, scaffolding etc.) inside a project.
 
 ## Running it
 
-Grab the distribution [from our JFrog repo](https://codebuilders.jfrog.io/artifactory/default-generic-local/skeletor-app),
+Grab the distribution [from our JFrog repo](https://codebuilders.jfrog.io/artifactory/generic/skeletor-app),
 unpack it to a local directory, and then add its 'bin' directory to your `PATH`
 environment variable.
+
+### Finding out what templates are available
+
+To see what templates you can install, run
+
+    skeletor list
+ 
+This will list all aliases and remote templates. If you want to see what
+templates you have cached locally, run
+
+    skeletor list --cached
+
+In fact, `--cached` is implied if Lazybones can't connect to the internet.
+
+Example
+
+    skeletor list
+
+    Available templates in https://codebuilders.jfrog.io/artifactory/generic/skeletor-templates
+
+    aoo-addin
+    aoo-addin-java
+    aoo-addon
+    aoo-addon-java
+    aoo-client
+
+You can also find out more about a template through the `info` command:
+
+    skeletor info <template name>
+
+This will print a description of the template and what versions are available
+for it. If you're offline, this will simply display an error message.
+
+Example
+    
+    skeletor info aoo-client
+
+    Fetching package information for 'aoo-client' from repo
+    Name:        aoo-client
+    Latest:      0.3.0
+    Description: Apache OpenOffice Client Template for Groovy
+    Owner:       Code Builders, LLC
+    Versions:    0.3.0
+
+    More information at https://codebuilders.jfrog.io/artifactory/generic/skeletor-templates
+
 
 ### Creating projects
 
@@ -168,25 +214,7 @@ Note that you do not specify a version with the `generate` command. This is
 because the subtemplates are embedded directly in the project template, and
 so there can only be one version available to you.
 
-### Finding out what templates are available
 
-To see what templates you can install, run
-
-    skeletor list
- 
-This will list all aliases and remote templates. If you want to see what
-templates you have cached locally, run
-
-    skeletor list --cached
-
-In fact, `--cached` is implied if Lazybones can't connect to the internet.
-
-You can also find out more about a template through the `info` command:
-
-    skeletor info <template name>
-
-This will print a description of the template and what versions are available
-for it. If you're offline, this will simply display an error message.
 
 ## Configuration
 
