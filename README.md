@@ -13,8 +13,9 @@ case yet, I'll document the manual installation process as well.
 
 The big changes from Lazybones are: 
 1. The new project name and the application command are both now 'skeletor'
-1. The user profile directory for configurations and template cache is now $USER_HOME/.skeletor
-1. A new URL based repository has been implemented for use by listing and creating projects from it. 
+2. The user profile directory for configurations and template cache is now $USER_HOME/.skeletor
+3. Bintray repositories are no longer available. Eventually this configuration will be removed.
+4. A new URL based repository has been implemented for use by listing and creating projects from it.
 Publishing to the repository is not yet implemented. Manual steps are trivial and documented below.
 
 Existing Lazybones templates should still work if moved to a URL repository as described below.
@@ -113,18 +114,18 @@ To create a new project, run
 
     skeletor create <template name> <template version> <target directory>
 
-So if you wanted to create a skeleton Ratpack project in a new 'my-rat-app'
+So if you wanted to create a skeleton Apache OpenOffice Client project in a new 'my-aoo-client-app'
 directory you would run
 
-    skeletor create ratpack 1.2.0 my-rat-app
+    skeletor create aoo-client 0.3.0 my-aoo-client-app
     
 The version is optional and if you leave it out, Skeletor will install the
 latest version of the template it can find. 
 
-Named templates are all stored on Bintray. By default, Lazybones searches for
-templates in the pledbrook/lazybones-templates repository, but you can use
-other Bintray repositories by adding some configuration - set the Custom
-Repositories section under Configuration later in this document.
+The default templates are listed from Code Builders, LLC's Artifactory account hosted by JFrog at 
+https://codebuilders.jfrog.io/artifactory/generic/skeletor-templates. Skeletor searches for
+templates at this URL by default, but you can use other URL repositories by adding some configuration. 
+See the Custom Repositories section under Configuration later in this document.
 
 You're not limited to only Bintray as you can install templates directly from 
 a URL too:

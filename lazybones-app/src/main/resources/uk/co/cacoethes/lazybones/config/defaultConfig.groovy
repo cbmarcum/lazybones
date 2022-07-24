@@ -6,5 +6,5 @@
 config.file = new File(System.getProperty('user.home'), '.skeletor/config.groovy').path
 cache.dir = new File(System.getProperty('user.home'), ".skeletor/templates").path
 simpleRepositories = [
-        "https://codebuilders.jfrog.io/artifactory/default-generic-local/skeletor-templates"
+        "https://codebuilders.jfrog.io/artifactory/generic/skeletor-templates"
 ]
