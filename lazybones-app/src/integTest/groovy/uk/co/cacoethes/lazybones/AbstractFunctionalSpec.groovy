@@ -48,6 +48,7 @@ abstract class AbstractFunctionalSpec extends Specification {
      * @return The exit code of the skeletor process.
      */
     int runCommand(List cmdList, File workDir, List inputs = [], boolean clearPrevious = true) {
+
         if (clearPrevious) {
             // Clear out results of previous executions
             FileUtils.deleteDirectory(workDir)

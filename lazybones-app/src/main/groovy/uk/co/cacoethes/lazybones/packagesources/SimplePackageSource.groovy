@@ -52,13 +52,13 @@ class SimplePackageSource implements PackageSource {
         // create the URLConnection
         // TODO: may need fixed for windows file urls unless we can use forward slash with java like ant
         url = new URL("${repoName}/skeletor-manifest.txt")
-        URLConnection connection = (URLConnection) url.openConnection()
+        URLConnection connection = url.openConnection() // Test remove URLConnection cast
 
         // uncomment this if you want to write output to this url
         //connection.setDoOutput(true)
 
         // give it 15 seconds to respond
-        connection.setReadTimeout(15*1000)
+        connection.setReadTimeout(15 * 1000)
         connection.connect()
 
         // read the output from the server
@@ -96,16 +96,31 @@ class SimplePackageSource implements PackageSource {
         // create the URLConnection
         // TODO: may need fixed for windows file urls unless we can use forward slash with java like ant
         url = new URL("${repoName}/skeletor-manifest.txt")
-        URLConnection connection = (URLConnection) url.openConnection()
+        // println "URL=${url.toString()}" // DEBUG
+        URLConnection connection = url.openConnection() // Test remove URLConnection cast
 
         // uncomment this if you want to write output to this url
         //connection.setDoOutput(true)
 
+        connection.setFollowRedirects(true) // our new artifactory repo may have redirects
+
         // give it 15 seconds to respond
-        connection.setReadTimeout(15*1000)
-        connection.connect()
+        connection.setReadTimeout(15 * 1000)
+
+        try {
+            connection.connect()
+        } catch (java.net.ConnectException connectException) {
+            println(connectException.message)
+            println(connection.toString())
+            connectException.printStackTrace()
+            return null
+        } catch (java.io.IOException ioException) {
+            println(ioException.message)
+            return null
+        }
 
         // read the output from the server
+
         reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))
 
         // new escape char since we have some \ characters in text
@@ -122,6 +137,7 @@ class SimplePackageSource implements PackageSource {
                 packages << bean
             }
         }
+
         if (!packages) {
             return null
         }
@@ -145,11 +161,11 @@ class SimplePackageSource implements PackageSource {
             pkgInfo.latestVersion = VersionUtils.mostRecentVersion(pkgInfo.versions)
 
             // use the highest version package for owner and description
-            SimplePackageBean  pkg = packages.find {it.version == pkgInfo.latestVersion}
+            SimplePackageBean pkg = packages.find { it.version == pkgInfo.latestVersion }
             pkgInfo.owner = pkg.owner
             pkgInfo.description = pkg.description
             pkgInfo.url = repoName // TODO: url - assuming this is to the directory (repoName) for now.
-            }
+        }
 
         return pkgInfo
     }

@@ -3,18 +3,19 @@ package uk.co.cacoethes.lazybones
 import co.freeside.betamax.Betamax
 import co.freeside.betamax.Recorder
 import org.junit.*
+import spock.lang.Ignore
 
 class CreateFunctionalSpec extends AbstractFunctionalSpec {
-    @Rule Recorder recorder = new Recorder()
+    // @Rule Recorder recorder = new Recorder()
 
     void setup() {
-        initProxy(recorder.proxy.address())
+        // initProxy(recorder.proxy.address()) // TODO: figure out why removing this fixed http tests
     }
 
     // @Betamax(tape="create-tape")
     def "Create command installs a packaged template"() {
         when: "I run skeletor with the create command for the aoo-addin template"
-        def exitCode = runCommand(["create", "aoo-addin", "0.3.0", "test-addin"], baseWorkDir)
+        def exitCode = runCommand(["create", "aoo-addin", "0.3.0", "test-addin", "-Pgroup=org.example", "-PartifactId=test-addin", "-Pversion=0.1.0", "-Ppackage=org.example", "-PclassName=TestAddin"], baseWorkDir)
 
         then: "It unpacks the template, retaining file permissions"
         exitCode == 0
@@ -23,7 +24,7 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         appDir.exists()
         new File(appDir, "gradlew").canExecute()
         new File(appDir, "src/main/groovy").isDirectory()
-        new File(appDir, "src/main/groovy/README.md").isFile()
+        new File(appDir, "src/main/groovy/org/example/TestAddinImpl.groovy").isFile()
 
         and: "It says that the given version of the package is being installed in the target directory"
         output =~ /Creating project from template aoo-addin 0.3.0 in 'test-addin'/
@@ -31,20 +32,20 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
 
     // @Betamax(tape="create-tape")
     def "Create command installs latest version of a packaged template if version not specified"() {
-        when: "I run lazybones with the create command for the ratpack template"
-        def exitCode = runCommand(["create", "ratpack", "ratapp"], baseWorkDir)
+        when: "I run skeletor with the create command for the aoo-addin template"
+        def exitCode = runCommand(["create", "aoo-addin", "test-addin", "-Pgroup=org.example", "-PartifactId=test-addin", "-Pversion=0.1.0", "-Ppackage=org.example", "-PclassName=TestAddin"], baseWorkDir)
 
         then: "It unpacks the template, retaining file permissions"
         exitCode == 0
 
-        def appDir = new File(baseWorkDir, "ratapp")
+        def appDir = new File(baseWorkDir, "test-addin")
         appDir.exists()
         new File(appDir, "gradlew").canExecute()
         new File(appDir, "src/main/groovy").isDirectory()
-        new File(appDir, "src/ratpack/public/index.html").isFile()
+        new File(appDir, "src/main/groovy/org/example/TestAddinImpl.groovy").isFile()
 
         and: "It says that the latest version of the package is being installed in the target directory"
-        output =~ /Creating project from template ratpack \(latest\) in 'ratapp'/
+        output =~ /Creating project from template aoo-addin \(latest\) in 'test-addin'/
     }
 
     // @Betamax(tape="create-tape")
@@ -91,39 +92,43 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
 
     // @Betamax(tape="create-tape")
     def "Create command installs a template from an HTTP URL"() {
-        when: "I run lazybones with the create command using a full URL for the ratpack template"
-        def packageUrl = "http://dl.dropboxusercontent.com/u/29802534/custom-ratpack.zip"
-        def exitCode = runCommand(["--verbose", "create", packageUrl, "ratapp"], baseWorkDir)
+        when: "I run skeletor with the create command using a full URL for the aoo-addin template"
+        def packageUrl = "https://codebuilders.jfrog.io/artifactory/generic/skeletor-templates/aoo-addin-0.3.0.zip"
+        def exitCode = runCommand(["--verbose", "create", packageUrl, "test-addin", "-Pgroup=org.example", "-PartifactId=test-addin", "-Pversion=0.1.0", "-Ppackage=org.example", "-PclassName=TestAddin"], baseWorkDir)
 
         then: "It unpacks the template, retaining file permissions"
         exitCode == 0
 
-        def appDir = new File(baseWorkDir, "ratapp")
+        def appDir = new File(baseWorkDir, "test-addin")
         appDir.exists()
         new File(appDir, "gradlew").canExecute()
         new File(appDir, "src/main/groovy").isDirectory()
-        new File(appDir, "src/ratpack/public/index.html").isFile()
+        new File(appDir, "src/main/groovy/org/example/TestAddinImpl.groovy").isFile()
 
         and: "It says that the latest version of the package is being installed in the target directory"
-        output =~ /Creating project from template http:\/\/dl\.dropboxusercontent\.com.* \(latest\) in 'ratapp'/
+        output =~ /Creating project from template https:\/\/codebuilders.jfrog.io\/artifactory\/generic\/skeletor-templates\/aoo-addin-0.3.0.zip \(latest\) in 'test-addin'/
 
-        when: "I run lazybones with a mapping to a full url for the ratpack template"
-        assert appDir.deleteDir()
-        exitCode = runCommand(["--verbose", "create", "customRatpack", "ratapp"], baseWorkDir)
-
-        then: "It unpacks the template, retaining file permissions"
-        exitCode == 0
-
-        appDir.exists()
-        new File(appDir, "gradlew").canExecute()
-        new File(appDir, "src/main/groovy").isDirectory()
-        new File(appDir, "src/ratpack/public/index.html").isFile()
-
-        and: "It says that the latest version of the package is being installed in the target directory"
-        output =~ /Creating project from template http:\/\/dl\.dropboxusercontent\.com.* \(latest\) in 'ratapp'/
     }
 
-    def "Create command installs a template from a file URL"() {
+    def "Create command installs a template from a URL mapping"() {
+        when: "I run skeletor with the create command using mapping for the aoo-addin template"
+        def exitCode = runCommand(["--verbose", "create", "customAooAddin", "test-addin", "-Pgroup=org.example", "-PartifactId=test-addin", "-Pversion=0.1.0", "-Ppackage=org.example", "-PclassName=TestAddin"], baseWorkDir)
+
+        then: "It unpacks the template, retaining file permissions"
+        exitCode == 0
+
+        def appDir = new File(baseWorkDir, "test-addin")
+        appDir.exists()
+        new File(appDir, "gradlew").canExecute()
+        new File(appDir, "src/main/groovy").isDirectory()
+        new File(appDir, "src/main/groovy/org/example/TestAddinImpl.groovy").isFile()
+
+        and: "It says that the latest version of the package is being installed in the target directory"
+        output =~ /Creating project from template https:\/\/codebuilders.jfrog.io\/artifactory\/generic\/skeletor-templates\/aoo-addin-0.3.0.zip \(latest\) in 'test-addin'/
+
+    }
+
+        def "Create command installs a template from a file URL"() {
         when: "I run lazybones with the create command for the ratpack template"
         def packageUrl = getClass().classLoader.getResource("dummy-app.zip").toURI().toString()
         def exitCode = runCommand(["--verbose", "create", packageUrl, "mvnapp"], baseWorkDir)
@@ -209,16 +214,17 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
     // @Betamax(tape="create-tape")
     def "Create command reports error if specified version of a package cannot be found"() {
         when: "I run lazybones with the create command for an unknown version of a known package"
-        def exitCode = runCommand(["create", "ratpack", "99.99", "myapp"], baseWorkDir)
+        def exitCode = runCommand(["create", "aoo-addin", "99.99", "test-addin", "-Pgroup=org.example", "-PartifactId=test-addin", "-Pversion=0.1.0", "-Ppackage=org.example", "-PclassName=TestAddin"], baseWorkDir)
 
         then: "It returns a non-zero exit code and reports the package as missing"
         exitCode != 0
-        output =~ /Cannot find version 99.99 of template 'ratpack'./
+        output =~ /Cannot find version 99.99 of template 'aoo-addin'./
 
-        !new File(baseWorkDir, "myapp").exists()
+        !new File(baseWorkDir, "test-addin").exists()
     }
 
     // @Betamax(tape="create-tape")
+    @Ignore // not relevant with SimpleRepository as any template listed in the manifest will have a version
     def "Create command prints useful error message if no versions of a template are available"() {
         when: "I run lazybones with the create command for a template with no versions"
         def exitCode = runCommand(["create", "lazybones-project", "my-lzb-templates"], baseWorkDir)
