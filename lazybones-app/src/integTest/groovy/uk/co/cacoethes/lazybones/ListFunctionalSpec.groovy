@@ -15,7 +15,7 @@ class ListFunctionalSpec extends AbstractFunctionalSpec {
 
     // @Betamax(tape='list-tape')
     def "list command prints all available packages"() {
-        when: "I run lazybones with the list command"
+        when: "I run skeletor with the list command"
         def exitCode = runCommand(["list"], baseWorkDir)
 
         then: "It displays the available packages as a list"
@@ -50,9 +50,15 @@ class ListFunctionalSpec extends AbstractFunctionalSpec {
 
         output =~ /(?m)^Cached templates\s+/ +
                 /Oops-stuff                    1.0.4\s+/ +
+                /aoo-addin                     0.3.0\s+/ +
                 /ratpack                       ${versions.join(', ')}\s+/ +
                 /subtemplates-tmpl             0.1\s+/ +
-                /test-handlebars               0.1.1/
+                /test-handlebars               0.1.1\s+/ +
+                /test-handlebars-default       0.1\s+/ +
+                /test-no-default-engine        0.1\s+/ +
+                /test-tmpl                     0.2\s+/ +
+                /test-tmpl-subscripts          0.2\s+/
+
         !(output =~ /Exception/)
         !(remoteTemplates.any { it in output })
         !(output =~ /Available subtemplates/)
@@ -76,7 +82,7 @@ class ListFunctionalSpec extends AbstractFunctionalSpec {
 
     // @Betamax(tape='list-tape')
     def "list command prints no subtemplates"() {
-        given: "A lazybones generated project"
+        given: "A skeletor generated project"
         def projectDir = createTempProject()
 
         when: "I run the list command with --subs option"
@@ -95,7 +101,7 @@ class ListFunctionalSpec extends AbstractFunctionalSpec {
 
     // @Betamax(tape='list-tape')
     def "list command prints available subtemplates"() {
-        given: "A lazybones generated project"
+        given: "A skeletor generated project"
         def projectDir = createTempProject()
 
         and: "A subtemplate is available in the local lazybones directory"
@@ -109,8 +115,8 @@ class ListFunctionalSpec extends AbstractFunctionalSpec {
         then: "It does display all available subtemplates"
         exitCode == 0
         output =~ /(?m)^Available subtemplates\s+/ +
-                  /^\s+artifact\s+1.0.0\s+/ +
-                  /^\s+web\s+0.8\s+/
+                /^\s+artifact\s+1.0.0\s+/ +
+                /^\s+web\s+0.8\s+/
         !(output =~ /Exception/)
         !(output =~ /Cached templates/)
         !(output =~ /Available mappings/)
