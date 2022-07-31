@@ -6,30 +6,34 @@ import org.apache.commons.io.FileUtils
 import org.junit.*
 
 class ListFunctionalSpec extends AbstractFunctionalSpec {
-    @Rule Recorder recorder = new Recorder()
-    def remoteTemplates = ["afterburnerfx", "dropwizard", "gaelyk", "gradle-plugin", "gradle-quickstart"]
+    // @Rule Recorder recorder = new Recorder()
+    def remoteTemplates = ["aoo-addin", "aoo-addin-java", "aoo-addon", "aoo-addon-java", "aoo-client"]
 
     void setup() {
-        initProxy(recorder.proxy.address())
+        // initProxy(recorder.proxy.address())
     }
 
-    @Betamax(tape='list-tape')
+    // @Betamax(tape='list-tape')
     def "list command prints all available packages"() {
         when: "I run lazybones with the list command"
         def exitCode = runCommand(["list"], baseWorkDir)
 
         then: "It displays the available packages as a list"
         exitCode == 0
+
+        // watch for spaces between mapping name and -> will change based on longest mapping name
         output =~ /(?m)^Available mappings\s+/ +
-                /\s+customRatpack  -> http:\/\/dl.dropboxusercontent.com\/u\/29802534\/custom-ratpack.zip\s+/ +
-                /\s+doesNotExist   -> file:\/\/\/does\/not\/exist\s+/
+                /\s+customRatpack   -> http:\/\/dl.dropboxusercontent.com\/u\/29802534\/custom-ratpack.zip\s+/ +
+                /\s+doesNotExist    -> file:\/\/\/does\/not\/exist\s+/ +
+                /\s+customAooAddin  -> https:\/\/codebuilders.jfrog.io\/artifactory\/generic\/skeletor-templates\/aoo-addin-0.3.0.zip\s+/
+
         output =~ /\s+${remoteTemplates.join('\\s+')}\s+/
         !(output =~ /Exception/)
         !(output =~ /Cached templates/)
         !(output =~ /Available subtemplates/)
     }
 
-    @Betamax(tape='list-tape')
+    // @Betamax(tape='list-tape')
     def "list command prints cached templates"() {
         given: "A template in the cache matching a remote one"
         def versions = addMultiVersionCachedPackage("ratpack")
@@ -40,8 +44,9 @@ class ListFunctionalSpec extends AbstractFunctionalSpec {
         then: "It displays the available packages as a list"
         exitCode == 0
         output =~ /(?m)^Available mappings\s+/ +
-                /\s+customRatpack  -> http:\/\/dl.dropboxusercontent.com\/u\/29802534\/custom-ratpack.zip\s+/ +
-                /\s+doesNotExist   -> file:\/\/\/does\/not\/exist\s+/
+                /\s+customRatpack   -> http:\/\/dl.dropboxusercontent.com\/u\/29802534\/custom-ratpack.zip\s+/ +
+                /\s+doesNotExist    -> file:\/\/\/does\/not\/exist\s+/ +
+                /\s+customAooAddin  -> https:\/\/codebuilders.jfrog.io\/artifactory\/generic\/skeletor-templates\/aoo-addin-0.3.0.zip\s+/
 
         output =~ /(?m)^Cached templates\s+/ +
                 /Oops-stuff                    1.0.4\s+/ +
@@ -53,7 +58,7 @@ class ListFunctionalSpec extends AbstractFunctionalSpec {
         !(output =~ /Available subtemplates/)
     }
 
-    @Betamax(tape='list-tape')
+    // @Betamax(tape='list-tape')
     def "list command with --subs in non-project directory"() {
         when: "I run the list command with --subs option"
         // do not clear workdir or we lose our setup
@@ -69,7 +74,7 @@ class ListFunctionalSpec extends AbstractFunctionalSpec {
         !(remoteTemplates.any { it in output })
     }
 
-    @Betamax(tape='list-tape')
+    // @Betamax(tape='list-tape')
     def "list command prints no subtemplates"() {
         given: "A lazybones generated project"
         def projectDir = createTempProject()
@@ -88,7 +93,7 @@ class ListFunctionalSpec extends AbstractFunctionalSpec {
         !(remoteTemplates.any { it in output })
     }
 
-    @Betamax(tape='list-tape')
+    // @Betamax(tape='list-tape')
     def "list command prints available subtemplates"() {
         given: "A lazybones generated project"
         def projectDir = createTempProject()

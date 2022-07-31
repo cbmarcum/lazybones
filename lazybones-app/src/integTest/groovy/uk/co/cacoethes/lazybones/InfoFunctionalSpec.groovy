@@ -6,7 +6,7 @@ import org.junit.*
 import spock.lang.Ignore
 
 class InfoFunctionalSpec extends AbstractFunctionalSpec {
-    @Rule Recorder recorder = new Recorder()
+    // @Rule Recorder recorder = new Recorder()
 
     void setup() {
         // initProxy(recorder.proxy.address())
