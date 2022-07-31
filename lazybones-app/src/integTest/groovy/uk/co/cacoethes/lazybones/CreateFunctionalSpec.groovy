@@ -224,7 +224,7 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
     }
 
     // @Betamax(tape="create-tape")
-    @Ignore // not relevant with SimpleRepository as any template listed in the manifest will have a version
+    @Ignore("not relevant with SimplePackageSource as any template listed in the manifest will have a version")
     def "Create command prints useful error message if no versions of a template are available"() {
         when: "I run lazybones with the create command for a template with no versions"
         def exitCode = runCommand(["create", "lazybones-project", "my-lzb-templates"], baseWorkDir)

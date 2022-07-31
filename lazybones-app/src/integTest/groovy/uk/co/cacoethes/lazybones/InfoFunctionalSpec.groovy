@@ -3,32 +3,35 @@ package uk.co.cacoethes.lazybones
 import co.freeside.betamax.Betamax
 import co.freeside.betamax.Recorder
 import org.junit.*
+import spock.lang.Ignore
 
 class InfoFunctionalSpec extends AbstractFunctionalSpec {
     @Rule Recorder recorder = new Recorder()
 
     void setup() {
-        initProxy(recorder.proxy.address())
+        // initProxy(recorder.proxy.address())
     }
 
-    @Betamax(tape='info-tape')
+    // @Betamax(tape='info-tape')
     def "Info command prints all available info for a package"() {
         println "My Groovy Version is: ${GroovySystem.version}"
 
         when: "I run lazybones with the info command for the ratpack template"
-        def exitCode = runCommand(["info", "ratpack"], baseWorkDir)
+        // def exitCode = runCommand(["info", "ratpack"], baseWorkDir)
+        def exitCode = runCommand(["info", "aoo-addin"], baseWorkDir)
 
         then: "It displays the ratpack info"
         exitCode == 0
-        output =~ /\bName:\s+ratpack\b/
-        output =~ /\bLatest:\s+0.1\b/
-        output =~ /\bOwner:\s+pledbrook\b/
-        output =~ /\bVersions:\s+0.1\b/
-        output =~ /\bDescription:\s+Template for a basic Groovy-based Ratpack application/
+        output =~ /\bName:\s+aoo-addin\b/
+        output =~ /\bLatest:\s+0.3.0\b/
+        output =~ /\bOwner:\s+Code Builders, LLC\b/
+        output =~ /\bVersions:\s+0.3.0\b/
+        output =~ /\bDescription:\s+Apache OpenOffice Add-In Template for Groovy/
         !(output =~ /Exception/)
     }
 
-    @Betamax(tape='info-tape')
+    // @Betamax(tape='info-tape')
+    @Ignore("TODO: add dummy test to repo without Description")
     def "Info command prints only info that is available for a package, when that is just a subset of all info"() {
         when: "I run lazybones with the info command for the ratpack-lite template"
         def exitCode = runCommand(["info", "ratpack-lite"], baseWorkDir)
@@ -43,7 +46,7 @@ class InfoFunctionalSpec extends AbstractFunctionalSpec {
         !(output =~ /Exception/)
     }
 
-    @Betamax(tape='info-tape')
+    // @Betamax(tape='info-tape')
     def "Info command notifies user when a package can't be found"() {
         when: "I run lazybones with the info command for a non-existent template"
         def exitCode = runCommand(["info", "dummy"], baseWorkDir)
@@ -53,7 +56,8 @@ class InfoFunctionalSpec extends AbstractFunctionalSpec {
         output =~ /Cannot find a template named 'dummy'/
     }
 
-    @Betamax(tape='info-tape')
+    // @Betamax(tape='info-tape')
+    @Ignore("not relevant with SimplePackageSource as any template listed in the manifest will have a version")
     def "Info command prints useful error message if no versions of a template are available"() {
         when: "I run lazybones with the info command for a template with no versions"
         def exitCode = runCommand(["info", "lazybones-project"], baseWorkDir)
