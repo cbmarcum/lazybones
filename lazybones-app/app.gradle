@@ -117,7 +117,8 @@ task configureCachePath {
     project.extensions.lazybones.installDir = new File(project.cachePath)
 }
 
-//for a single test, you can run "gradle -DintegTest.single=<test name>"
+// for a single test, you can run:
+// ./gradlew integTest --tests=uk.co.cacoethes.lazybones.ConfigFunctionalSpec
 task integTest(type: Test) {
     dependsOn "installDist", "configureCachePath", "installAllTemplates"
 
