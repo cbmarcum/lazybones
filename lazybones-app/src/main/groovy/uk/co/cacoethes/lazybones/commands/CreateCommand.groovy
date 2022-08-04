@@ -16,7 +16,7 @@ import wslite.http.HTTPClientException
 import java.util.logging.Level
 
 /**
- * Implements Lazybone's create command, which creates a new project based on
+ * Implements Skeletor's create command, which creates a new project based on
  * a specified template.
  */
 @Log
@@ -125,6 +125,19 @@ USAGE: create <template> <version>? <dir>
             return 1
         }
         catch (HTTPClientException ex) {
+            if (OfflineMode.isOffline(ex)) {
+                OfflineMode.printlnOfflineMessage(ex, log, globalOptions.stacktrace as boolean)
+            }
+            else {
+                log.severe "Unexpected failure: ${ex.message}"
+                if (globalOptions.stacktrace) log.log Level.SEVERE, "", ex
+            }
+
+            println()
+            println "Cannot create a new project when the template isn't locally cached or no version is specified"
+            return 1
+        }
+        catch (ConnectException ex) {
             if (OfflineMode.isOffline(ex)) {
                 OfflineMode.printlnOfflineMessage(ex, log, globalOptions.stacktrace as boolean)
             }

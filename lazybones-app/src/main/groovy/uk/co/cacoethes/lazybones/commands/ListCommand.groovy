@@ -12,7 +12,7 @@ import java.util.logging.Level
 import java.util.regex.Pattern
 
 /**
- * A Lazybones command that prints out all the available templates by name,
+ * A Skeletor command that prints out all the available templates by name,
  * including any aliases that the user has configured in his or her settings.
  */
 @Log
@@ -144,8 +144,8 @@ USAGE: list
             def pkgSource = new SimplePackageSource(repoName)
             return pkgSource.listPackageNames().sort()
         }
-        catch (IOException ex) {
-            return ex.cause
+        catch (IOException ex) { // probably a ConnectException
+            return ex // was ex.cause
         }
     }
 
