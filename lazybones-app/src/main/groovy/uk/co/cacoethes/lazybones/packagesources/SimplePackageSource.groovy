@@ -52,7 +52,7 @@ class SimplePackageSource implements PackageSource {
         // create the URLConnection
         // TODO: may need fixed for windows file urls unless we can use forward slash with java like ant
         url = new URL("${repoName}/skeletor-manifest.txt")
-        URLConnection connection = url.openConnection() // Test remove URLConnection cast
+        URLConnection connection = url.openConnection() // removed URLConnection cast
 
         // uncomment this if you want to write output to this url
         //connection.setDoOutput(true)
@@ -96,7 +96,7 @@ class SimplePackageSource implements PackageSource {
         // create the URLConnection
         // TODO: may need fixed for windows file urls unless we can use forward slash with java like ant
         url = new URL("${repoName}/skeletor-manifest.txt")
-        // println "URL=${url.toString()}" // DEBUG
+
         URLConnection connection = url.openConnection() // Test remove URLConnection cast
 
         // uncomment this if you want to write output to this url
@@ -110,17 +110,10 @@ class SimplePackageSource implements PackageSource {
         try {
             connection.connect()
         } catch (java.net.ConnectException connectException) {
-            println(connectException.message)
-            println(connection.toString())
-            connectException.printStackTrace()
-            return null
-        } catch (java.io.IOException ioException) {
-            println(ioException.message)
-            return null
+            throw connectException
         }
 
         // read the output from the server
-
         reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))
 
         // new escape char since we have some \ characters in text
@@ -151,7 +144,7 @@ class SimplePackageSource implements PackageSource {
                 owner = packages[0].owner
                 description = packages[0].description
             }
-            pkgInfo.url = repoName // TODO: url - assuming this is to the directory (repoName) for now.
+            pkgInfo.url = getTemplateUrl(pkgInfo.name, pkgInfo.versions[0]) // url to latest package
 
         } else { // more than 1
             pkgInfo = new PackageInfo(this, packages[0].name)
@@ -164,7 +157,7 @@ class SimplePackageSource implements PackageSource {
             SimplePackageBean pkg = packages.find { it.version == pkgInfo.latestVersion }
             pkgInfo.owner = pkg.owner
             pkgInfo.description = pkg.description
-            pkgInfo.url = repoName // TODO: url - assuming this is to the directory (repoName) for now.
+            pkgInfo.url = getTemplateUrl(pkgInfo.name, pkgInfo.latestVersion) // url to latest package
         }
 
         return pkgInfo
