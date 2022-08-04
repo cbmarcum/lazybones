@@ -17,6 +17,11 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         when: "I run skeletor with the create command for the aoo-addin template"
         def exitCode = runCommand(["create", "aoo-addin", "0.3.0", "test-addin", "-Pgroup=org.example", "-PartifactId=test-addin", "-Pversion=0.1.0", "-Ppackage=org.example", "-PclassName=TestAddin"], baseWorkDir)
 
+        def aooPackage = new File(cacheDirPath, "aoo-addin-0.3.0.zip")
+        if (aooPackage.exists()) {
+            filesToDelete << aooPackage
+        }
+
         then: "It unpacks the template, retaining file permissions"
         exitCode == 0
 
@@ -34,6 +39,11 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
     def "Create command installs latest version of a packaged template if version not specified"() {
         when: "I run skeletor with the create command for the aoo-addin template"
         def exitCode = runCommand(["create", "aoo-addin", "test-addin", "-Pgroup=org.example", "-PartifactId=test-addin", "-Pversion=0.1.0", "-Ppackage=org.example", "-PclassName=TestAddin"], baseWorkDir)
+
+        def aooPackage = new File(cacheDirPath, "aoo-addin-0.3.0.zip")
+        if (aooPackage.exists()) {
+            filesToDelete << aooPackage
+        }
 
         then: "It unpacks the template, retaining file permissions"
         exitCode == 0
@@ -96,6 +106,11 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         def packageUrl = "https://codebuilders.jfrog.io/artifactory/generic/skeletor-templates/aoo-addin-0.3.0.zip"
         def exitCode = runCommand(["--verbose", "create", packageUrl, "test-addin", "-Pgroup=org.example", "-PartifactId=test-addin", "-Pversion=0.1.0", "-Ppackage=org.example", "-PclassName=TestAddin"], baseWorkDir)
 
+        def aooPackage = new File(cacheDirPath, "aoo-addin-0.3.0.zip")
+        if (aooPackage.exists()) {
+            filesToDelete << aooPackage
+        }
+
         then: "It unpacks the template, retaining file permissions"
         exitCode == 0
 
@@ -113,6 +128,11 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
     def "Create command installs a template from a URL mapping"() {
         when: "I run skeletor with the create command using mapping for the aoo-addin template"
         def exitCode = runCommand(["--verbose", "create", "customAooAddin", "test-addin", "-Pgroup=org.example", "-PartifactId=test-addin", "-Pversion=0.1.0", "-Ppackage=org.example", "-PclassName=TestAddin"], baseWorkDir)
+
+        def aooPackage = new File(cacheDirPath, "aoo-addin-0.3.0.zip")
+        if (aooPackage.exists()) {
+            filesToDelete << aooPackage
+        }
 
         then: "It unpacks the template, retaining file permissions"
         exitCode == 0
@@ -235,7 +255,7 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
     }
 
     // @Betamax(tape="create-tape")
-    def "lazybones creates git repository on --with-git"() {
+    def "skeletor creates git repository on --with-git"() {
         given: "The platform line separator"
         def eol = System.getProperty("line.separator")
 
@@ -271,7 +291,7 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
     }
 
     def "Create can install from cache without template being in repository"() {
-        when: "I run lazybones with the create command for a template that's only in the cache"
+        when: "I run skeletor with the create command for a template that's only in the cache"
         def exitCode = runCommand(
                 ["create", "test-tmpl", "0.2", "testapp", "-Pgroup=foo", "-Pversion=0.1", "-PmaxThreads=3"],
                 baseWorkDir)
@@ -286,7 +306,7 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
     }
 
     def "Create command displays usage when incorrect number of arguments are provided"() {
-        when: "I run lazybones with the create command without an extra argument"
+        when: "I run skeletor with the create command without an extra argument"
         def exitCode = runCommand(["create"], baseWorkDir)
 
         then: "It returns a non-zero exit code and displays an error message"
