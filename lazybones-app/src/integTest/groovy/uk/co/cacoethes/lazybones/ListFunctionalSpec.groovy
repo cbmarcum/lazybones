@@ -50,7 +50,6 @@ class ListFunctionalSpec extends AbstractFunctionalSpec {
 
         output =~ /(?m)^Cached templates\s+/ +
                 /Oops-stuff                    1.0.4\s+/ +
-                /aoo-addin                     0.3.0\s+/ +
                 /ratpack                       ${versions.join(', ')}\s+/ +
                 /subtemplates-tmpl             0.1\s+/ +
                 /test-handlebars               0.1.1\s+/ +
