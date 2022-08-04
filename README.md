@@ -127,25 +127,25 @@ https://codebuilders.jfrog.io/artifactory/generic/skeletor-templates. Skeletor s
 templates at this URL by default, but you can use other URL repositories by adding some configuration. 
 See the Custom Repositories section under Configuration later in this document.
 
-You're not limited to only Bintray as you can install templates directly from 
-a URL too:
+You're not limited to only the default repository as you can install templates directly from 
+a URL also:
 
-    lazybones create http://dl.bintray.com/kyleboon/lazybones/java-basic-template-0.1.zip my-app
+    skeletor create https://codebuilders.jfrog.io/artifactory/generic/skeletor-templates/aoo-client-0.3.0.zip my-aoo-client-app
 
-Of course it can be pretty laborious copying and pasting URLs around, so Lazybones
+Of course, it can be pretty laborious copying and pasting URLs around, so Skeletor
 allows you to configure aliases for URLs that you use frequently. By adding the
-following configuration to your Lazybones settings file, `~/.lazybones/config.groovy`
+following configuration to your Skeletor settings file, `~/.skeletor/config.groovy`
 (see below for more details on this), you can install the template by name:
 
     templates {
         mappings {
-            myTmpl = "http://dl.bintray.com/..."
+            myTmpl = "https://codebuilders.jfrog.io/artifactory/generic/skeletor-templates/aoo-client-0.3.0.zip"
         }
     }
 
 In other words, you could now run
 
-    lazybones create myTmpl my-app
+    skeletor create myTmpl my-app
 
 Note that when using the URL option, there is no need to specify a version. You
 should also be aware that mappings take precedence, i.e. if a mapping has the
@@ -157,7 +157,7 @@ creates the specified directory and puts the initial project in there. If you
 want to unpack a template in the current directory instead, for example if you
 have already created the project directory, then just pass '.' as the directory:
 
-    lazybones create ratpack .
+    skeletor create ratpack .
 
 Once you have created a new project from a template, you may notice that the
 project directory contains a .lazybones sub directory. You may delete this, but
@@ -171,7 +171,7 @@ There is also the problem of scripting and automation when you want to create
 a project without user intervention. The solution to both these issues is to
 pass the values on the command line:
 
-    lazybones create ratpack 1.2.0 ratapp -Pgroup=org.example -Ppackage=org.example.myapp
+    skeletor create ratpack 1.2.0 ratapp -Pgroup=org.example -Ppackage=org.example.myapp
 
 The `-P` option allows you to pass property values into the project templates
 without user intervention. The key is to know what the property names are, and
@@ -184,13 +184,13 @@ have the `git` command on your path.
 
 ### Sub-templates
 
-As of Lazybones version 0.7, project templates can incorporate subtemplates.
+Project templates can incorporate subtemplates.
 Imagine that you have just created a new web application project from a template
 and that template documents that you can create new controllers using a sub-
 template named `controller`. To use it, just `cd` into the project directory
 and run
 
-    lazybones generate controller
+    skeletor generate controller
     
 This will probably ask you for the name of the controller and its package before
 generating the corresponding controller file in your project. You can reuse the
@@ -199,13 +199,13 @@ command to create as many controllers as you need.
 As with the `create` command, you can also pass in property values on the command
 line if the subtemplate is parameterised:
 
-    lazybones generate controller -Ppackage=org.example.myapp -Pclass=Book
+    skeletor generate controller -Ppackage=org.example.myapp -Pclass=Book
     
 The last option available to you as a user is template qualifiers. These only
 work if the subtemplate supports them, but they allow you to pass additional
 information in a concise way:
 
-    lazybones generate artifact::controller
+    skeletor generate artifact::controller
     
 In this case, the template name is `artifact`, but we have qualified it with
 an extra `controller`. You can pass in as many qualifiers as you want, you just
@@ -231,11 +231,11 @@ via either `JAVA_OPTS` or `LAZYBONES_OPTS` environment variables. For example:
 
     Highest precedence, i.e. it overrides all other sources of setting data.
 
-2.   User configuration file in `$USER_HOME/.lazybones/config.groovy`. This is parsed
+2.   User configuration file in `$USER_HOME/.skeletor/config.groovy`. This is parsed
 using Groovy's `ConfigSlurper`, so if you're familiar with that syntax you'll be
 right at home. Otherwise, just see the examples below.
 
-3.   (Since 0.8) A JSON configuration file in `$USER_HOME/.lazybones/managed-config.groovy`
+3.   (Since 0.8) A JSON configuration file in `$USER_HOME/.skeletor/managed-config.groovy`
 that is used by the `config` commands. You can edit it this as well.
 
 4.   A Groovy-based default configuration file that is provided by the application
@@ -251,7 +251,7 @@ The `config` command provides several sub-commands that allow you to interact wi
 the persisted Lazybones configuration; specifically, the JSON config file. You
 run a sub-command via
 
-    lazybones config <sub-cmd> <args>
+    skeletor config <sub-cmd> <args>
 
 where `<sub-cmd>` is one of:
 
@@ -279,20 +279,19 @@ where `<sub-cmd>` is one of:
 
 *   `list`
 
-    Displays all the configuration settings supported by Lazybones.
+    Displays all the configuration settings supported by Skeletor.
 
 So what configuration settings are you likely to customise?
 
 ### Custom repositories
 
-Lazybones will by default download the templates from a specific Bintray
-repository. If you want to host template packages in a different repository
-you can add it to Lazybone's search path via the `bintrayRepositories`
-setting:
+Skeletor will by default download the templates from a specific repository as 
+mentioned in the Creating Projects section. If you want to host template packages 
+in a different repository you can add it to Skeletor's search path via the `simpleRepositories`
+setting as a comma seperated list:
 
-    bintrayRepositories = [
-          "kyleboon/lazybones",
-          "pledbrook/lazybones-templates"
+    simpleRepositories = [
+      "https://codebuilders.jfrog.io/artifactory/default-generic-local/skeletor-templates"
     ]
 
 If a template exists in more than one repository, it will be downloaded from the
@@ -317,22 +316,20 @@ In a Groovy configuration file, you can define multiple aliases in a block:
 
 Alternatively, add them from the command line like this:
 
-    lazybones config set templates.mappings.after file:///var/tmp/afterburnerfx-2.0.0.zip
+    skeletor config set templates.mappings.after file:///var/tmp/afterburnerfx-2.0.0.zip
 
 The aliases will always be available to you until you remove them from the persisted
 configuration.
 
-### Setting a proxy (and other system properties) (Since 0.8.1)
+### Setting a proxy (and other system properties)
 
-Many people have to work behind a proxy, but Lazybones didn't make it easy to
-configure one. In fact the only way to do it was to add the relevant system
-properties to a `JAVA_OPTS` environment variable. From 0.8.1, you now have another
-option.
+Many people have to work behind a proxy, one way to do it is to add the relevant system
+properties to a `JAVA_OPTS` environment variable. There is also another option.
 
-Lazybones has stolen the idea of having a special form of configuration option for
+Skeletor has stolen the idea of having a special form of configuration option for
 system properties from Gradle. So if you define a property with a `systemProp.`
 prefix, it will be added as a system property internally. So to configure an HTTP
-proxy, you only need to add the following to your Lazybones configuration:
+proxy, you only need to add the following to your Skeletor configuration:
 
     systemProp {
         http {
@@ -358,7 +355,7 @@ properties:
         }
     }
 
-As with the host and port, there are `https` variants of the username and passwordi
+As with the host and port, there are `https` variants of the username and password
 as well.
 
 ### General options
