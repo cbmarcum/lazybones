@@ -2,6 +2,7 @@ package uk.co.cacoethes.lazybones
 
 import co.freeside.betamax.Betamax
 import org.apache.commons.io.FileUtils
+import spock.lang.Ignore
 import spock.lang.Unroll
 
 class OfflineFunctionalSpec extends AbstractFunctionalSpec {
@@ -11,7 +12,7 @@ class OfflineFunctionalSpec extends AbstractFunctionalSpec {
         initProxy(new InetSocketAddress("localhost", 61431))
     }
 
-    @Betamax(tape="create-tape")
+    // @Betamax(tape="create-tape")
     @Unroll
     def "list command prints local packages and mappings when offline #showsExceptionLabel#extraOutputLabel"() {
         given: "A template in the cache matching a remote one"
@@ -21,20 +22,25 @@ class OfflineFunctionalSpec extends AbstractFunctionalSpec {
             filesToDelete << ratpackPackage
         }
 
-        when: "I run lazybones with the list command"
+        when: "I run skeletor with the list command"
         def exitCode = runCommand(otherOptions + ["list"], baseWorkDir)
 
         then: "It displays only the template mappings and cached packages"
         exitCode == 0
         output =~ /(?m)^Available mappings\s+/ +
-                /customRatpack  -> http:\/\/dl.dropboxusercontent.com\/u\/29802534\/custom-ratpack.zip\s+/ +
-                /doesNotExist   -> file:\/\/\/does\/not\/exist/
+                /\s+customRatpack   -> http:\/\/dl.dropboxusercontent.com\/u\/29802534\/custom-ratpack.zip\s+/ +
+                /\s+doesNotExist    -> file:\/\/\/does\/not\/exist\s+/ +
+                /\s+customAooAddin  -> https:\/\/codebuilders.jfrog.io\/artifactory\/generic\/skeletor-templates\/aoo-addin-0.3.0.zip\s+/
+
         output =~ /(?m)^Cached templates\s+/ +
                 /Oops-stuff                    1.0.4\s+/ +
                 /ratpack                       0.1\s+/ +
                 /subtemplates-tmpl             0.1\s+/ +
                 /test-handlebars               0.1.1\s+/ +
-                /test-handlebars-default       0.1/
+                /test-handlebars-default       0.1\s+/ +
+                /test-no-default-engine        0.1\s+/ +
+                /test-tmpl                     0.2\s+/ +
+                /test-tmpl-subscripts          0.2\s+/
 
         and: "It displays an offline message, with optional explanation and stacktrace"
         output =~ /(?m)\(Offline mode - run with -v or --stacktrace to find out why\)\s+/ +
@@ -76,7 +82,7 @@ class OfflineFunctionalSpec extends AbstractFunctionalSpec {
     @Unroll
     def "create command fails gracefully when offline and it needs internet #showsExceptionLabel#extraOutputLabel"() {
         when: "I run the create command without a package version"
-        def exitCode = runCommand(otherOptions + ["create", "afterburnerfx", "afxapp"], baseWorkDir)
+        def exitCode = runCommand(otherOptions + ["create", "aoo-addin", "0.3.0", "test-addin", "-Pgroup=org.example", "-PartifactId=test-addin", "-Pversion=0.1.0", "-Ppackage=org.example", "-PclassName=TestAddin"], baseWorkDir)
 
         then: "It errors out"
         exitCode != 0
