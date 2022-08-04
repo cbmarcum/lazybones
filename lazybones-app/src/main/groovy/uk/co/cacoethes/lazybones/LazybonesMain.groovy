@@ -30,7 +30,7 @@ import static uk.co.cacoethes.lazybones.OptionParserBuilder.makeOptionParser
 @Log
 class LazybonesMain {
 
-    static final String USAGE = "USAGE: lazybones [OPTIONS] [COMMAND]\n"
+    static final String USAGE = "USAGE: skeletor [OPTIONS] [COMMAND]\n"
 
     static void main(String[] args) {
         def config = Configuration.initConfiguration()
@@ -57,7 +57,7 @@ class LazybonesMain {
         }
 
         if (optionSet.has(Options.VERSION)) {
-            println "Lazybones version ${readVersion()}"
+            println "Skeletor version ${readVersion()}"
             System.exit 0
         }
 
