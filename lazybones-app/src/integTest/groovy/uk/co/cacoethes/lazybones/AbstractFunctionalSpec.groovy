@@ -159,6 +159,12 @@ abstract class AbstractFunctionalSpec extends Specification {
                 " -Dlazybones.systemProp.https.proxyPort=" + proxyAddress.port +
                 " -Dlazybones.systemProp.http.proxyHost=" + proxyAddress.hostName +
                 " -Dlazybones.systemProp.http.proxyPort=" + proxyAddress.port
+
+        // workaround for removal of Basic authentication from HTTPS tunneling in Java 8u111
+        // https://www.oracle.com/java/technologies/javase/8u111-relnotes.html
+        env["JAVA_OPTS"] += " -Dlazybones.systemProp.jdk.http.auth.tunneling.disabledSchemes=false"
+        env["JAVA_OPTS"] += " -Dlazybones.systemProp.jdk.http.auth.proxying.disabledSchemes=false"
+
     }
 
     private Thread consumeProcessStream(final InputStream stream) {

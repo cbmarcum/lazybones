@@ -39,11 +39,6 @@ class ProxyFunctionalSpec extends AbstractFunctionalSpec {
         env["JAVA_OPTS"] += " -Dlazybones.systemProp.http.proxyUser=dummy"
         env["JAVA_OPTS"] += " -Dlazybones.systemProp.http.proxyPassword=password"
 
-        // workaround for removal of Basic authentication in Java 8u111
-        // https://www.oracle.com/java/technologies/javase/8u111-relnotes.html
-        env["JAVA_OPTS"] += " -Dlazybones.systemProp.jdk.http.auth.tunneling.disabledSchemes=false"
-        env["JAVA_OPTS"] += " -Dlazybones.systemProp.jdk.http.auth.proxying.disabledSchemes=false"
-
         when: "I run skeletor with the create command using a full URL for the aoo-addin template"
         def packageUrl = "https://codebuilders.jfrog.io/artifactory/generic/skeletor-templates/aoo-addin-0.3.0.zip"
         def exitCode = runCommand(["--verbose", "create", packageUrl, "test-addin", "-Pgroup=org.example", "-PartifactId=test-addin", "-Pversion=0.1.0", "-Ppackage=org.example", "-PclassName=TestAddin"], baseWorkDir)
@@ -67,11 +62,6 @@ class ProxyFunctionalSpec extends AbstractFunctionalSpec {
         env["JAVA_OPTS"] += " -Dlazybones.systemProp.http.proxyUser=dilbert"
         env["JAVA_OPTS"] += " -Dlazybones.systemProp.http.proxyPassword=password"
 
-        // workaround for removal of Basic authentication in Java 8u111
-        // https://www.oracle.com/java/technologies/javase/8u111-relnotes.html
-        env["JAVA_OPTS"] += " -Dlazybones.systemProp.jdk.http.auth.tunneling.disabledSchemes=false"
-        env["JAVA_OPTS"] += " -Dlazybones.systemProp.jdk.http.auth.proxying.disabledSchemes=false"
-
         when: "I run skeletor with the create command for the ratpack template"
         println "Env $env"
         println "Props ${System.properties}"
@@ -84,11 +74,6 @@ class ProxyFunctionalSpec extends AbstractFunctionalSpec {
 
     def "Create command triggers 407 if no proxy credentials provided"() {
         given: "a proxy that allows Basic authentication"
-
-        // workaround for removal of Basic authentication in Java 8u111
-        // https://www.oracle.com/java/technologies/javase/8u111-relnotes.html
-        env["JAVA_OPTS"] += " -Dlazybones.systemProp.jdk.http.auth.tunneling.disabledSchemes=false"
-        env["JAVA_OPTS"] += " -Dlazybones.systemProp.jdk.http.auth.proxying.disabledSchemes=false"
 
         when: "I run skeletor with the create command for the ratpack template"
         println "Env $env"
