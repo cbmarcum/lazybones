@@ -12,7 +12,7 @@ My goal is to get Skeletor updated and distributed on SDKMAN. As that is not the
 case yet, I'll document the manual installation process as well.
 
 The big changes from Lazybones are: 
-1. The new project name and the application command are both now 'skeletor'
+1. The new project name and the application command are both now 'skeletor'.
 2. The user profile directory for configurations and template cache is now $USER_HOME/.skeletor
 3. Bintray repositories are no longer available. Eventually this configuration will be removed.
 4. A new URL based repository has been implemented for use by listing and creating projects from it.
