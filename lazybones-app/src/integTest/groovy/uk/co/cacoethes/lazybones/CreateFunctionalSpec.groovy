@@ -1,26 +1,17 @@
 package uk.co.cacoethes.lazybones
 
-import co.freeside.betamax.Betamax
-import co.freeside.betamax.Recorder
 import org.junit.*
 import spock.lang.Ignore
 
 class CreateFunctionalSpec extends AbstractFunctionalSpec {
-    // @Rule Recorder recorder = new Recorder()
 
     void setup() {
-        // initProxy(recorder.proxy.address()) // TODO: figure out why removing this fixed http tests
+        filesToDelete << new File(cacheDirPath, "aoo-addin-0.3.0.zip")
     }
 
-    // @Betamax(tape="create-tape")
     def "Create command installs a packaged template"() {
         when: "I run skeletor with the create command for the aoo-addin template"
         def exitCode = runCommand(["create", "aoo-addin", "0.3.0", "test-addin", "-Pgroup=org.example", "-PartifactId=test-addin", "-Pversion=0.1.0", "-Ppackage=org.example", "-PclassName=TestAddin"], baseWorkDir)
-
-        def aooPackage = new File(cacheDirPath, "aoo-addin-0.3.0.zip")
-        if (aooPackage.exists()) {
-            filesToDelete << aooPackage
-        }
 
         then: "It unpacks the template, retaining file permissions"
         exitCode == 0
@@ -35,15 +26,9 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         output =~ /Creating project from template aoo-addin 0.3.0 in 'test-addin'/
     }
 
-    // @Betamax(tape="create-tape")
     def "Create command installs latest version of a packaged template if version not specified"() {
         when: "I run skeletor with the create command for the aoo-addin template"
         def exitCode = runCommand(["create", "aoo-addin", "test-addin", "-Pgroup=org.example", "-PartifactId=test-addin", "-Pversion=0.1.0", "-Ppackage=org.example", "-PclassName=TestAddin"], baseWorkDir)
-
-        def aooPackage = new File(cacheDirPath, "aoo-addin-0.3.0.zip")
-        if (aooPackage.exists()) {
-            filesToDelete << aooPackage
-        }
 
         then: "It unpacks the template, retaining file permissions"
         exitCode == 0
@@ -58,7 +43,6 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         output =~ /Creating project from template aoo-addin \(latest\) in 'test-addin'/
     }
 
-    // @Betamax(tape="create-tape")
     def "Post-install script works with multiple asks (#106)"() {
         when: "creating a groovyapp with no pre-defined property values"
         def args = [
@@ -77,7 +61,6 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         text.contains("version = \"1.0-SNAPSHOT\"")
     }
 
-    // @Betamax(tape="create-tape")
     def "Post-install script works with include subscripts"() {
         when: "creating a groovyapp with no pre-defined property values"
         def args = [
@@ -100,16 +83,10 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         !new File("$baseWorkDir/my-app", "sub1.groovy").exists()
     }
 
-    // @Betamax(tape="create-tape")
     def "Create command installs a template from an HTTP URL"() {
         when: "I run skeletor with the create command using a full URL for the aoo-addin template"
         def packageUrl = "https://codebuilders.jfrog.io/artifactory/generic/skeletor-templates/aoo-addin-0.3.0.zip"
         def exitCode = runCommand(["--verbose", "create", packageUrl, "test-addin", "-Pgroup=org.example", "-PartifactId=test-addin", "-Pversion=0.1.0", "-Ppackage=org.example", "-PclassName=TestAddin"], baseWorkDir)
-
-        def aooPackage = new File(cacheDirPath, "aoo-addin-0.3.0.zip")
-        if (aooPackage.exists()) {
-            filesToDelete << aooPackage
-        }
 
         then: "It unpacks the template, retaining file permissions"
         exitCode == 0
@@ -128,11 +105,6 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
     def "Create command installs a template from a URL mapping"() {
         when: "I run skeletor with the create command using mapping for the aoo-addin template"
         def exitCode = runCommand(["--verbose", "create", "customAooAddin", "test-addin", "-Pgroup=org.example", "-PartifactId=test-addin", "-Pversion=0.1.0", "-Ppackage=org.example", "-PclassName=TestAddin"], baseWorkDir)
-
-        def aooPackage = new File(cacheDirPath, "aoo-addin-0.3.0.zip")
-        if (aooPackage.exists()) {
-            filesToDelete << aooPackage
-        }
 
         then: "It unpacks the template, retaining file permissions"
         exitCode == 0
@@ -166,7 +138,6 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         output =~ /Creating project from template file:\/.*\/dummy-app.zip \(latest\) in 'mvnapp'/
     }
 
-    // @Betamax(tape="create-tape")
     def "Create command installs a packaged template into current directory"() {
         given: "An existing application directory"
         def appDir =  new File(baseWorkDir, "ratapp2")
@@ -186,7 +157,6 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         output =~ /Creating project from template test-tmpl 0.2 in current directory/
     }
 
-    // @Betamax(tape="create-tape")
     def "Create command reports error if no version given and package info is not available"() {
         when: "I run lazybones with the create command for an unknown package and no version"
         def exitCode = runCommand(["create", "unknown", "myapp"], baseWorkDir)
@@ -219,7 +189,6 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         !output.contains("Exception")
     }
 
-    // @Betamax(tape="create-tape")
     def "Create command reports error if package cannot be found"() {
         when: "I run lazybones with the create command for an unknown package"
         def exitCode = runCommand(["create", "unknown", "1.0", "myapp"], baseWorkDir)
@@ -231,7 +200,6 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         !new File(baseWorkDir, "myapp").exists()
     }
 
-    // @Betamax(tape="create-tape")
     def "Create command reports error if specified version of a package cannot be found"() {
         when: "I run lazybones with the create command for an unknown version of a known package"
         def exitCode = runCommand(["create", "aoo-addin", "99.99", "test-addin", "-Pgroup=org.example", "-PartifactId=test-addin", "-Pversion=0.1.0", "-Ppackage=org.example", "-PclassName=TestAddin"], baseWorkDir)
@@ -243,7 +211,6 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         !new File(baseWorkDir, "test-addin").exists()
     }
 
-    // @Betamax(tape="create-tape")
     @Ignore("not relevant with SimplePackageSource as any template listed in the manifest will have a version")
     def "Create command prints useful error message if no versions of a template are available"() {
         when: "I run lazybones with the create command for a template with no versions"
@@ -254,7 +221,6 @@ class CreateFunctionalSpec extends AbstractFunctionalSpec {
         output =~ /No version of 'lazybones-project' has been published/
     }
 
-    // @Betamax(tape="create-tape")
     def "skeletor creates git repository on --with-git"() {
         given: "The platform line separator"
         def eol = System.getProperty("line.separator")
