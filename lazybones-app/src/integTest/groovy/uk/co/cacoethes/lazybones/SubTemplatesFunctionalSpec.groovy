@@ -5,7 +5,7 @@ import java.util.regex.Pattern
 class SubTemplatesFunctionalSpec extends AbstractFunctionalSpec {
 
     def "Generate command installs a subtemplate"() {
-        given: "A new project created from a Lazybones template"
+        given: "A new project created from a Skeletor template"
         def appDir = createProjectWithSubTemplates()
 
         when: "I use the generate command within the new project"
@@ -27,7 +27,7 @@ class SubTemplatesFunctionalSpec extends AbstractFunctionalSpec {
     }
 
     def "Generate command passes project template parameters to subtemplate"() {
-        given: "A new project created from a Lazybones template"
+        given: "A new project created from a Skeletor template"
         def appDir = createProjectWithSubTemplates()
 
         when: "I use the generate command within the new project"
@@ -50,7 +50,7 @@ class SubTemplatesFunctionalSpec extends AbstractFunctionalSpec {
     }
 
     def "Generate command passes command qualifiers to post-install script"() {
-        given: "A new project created from a Lazybones template"
+        given: "A new project created from a Skeletor template"
         def appDir = createProjectWithSubTemplates()
 
         when: "I use the generate command within the new project with a set of qualifiers"
@@ -79,7 +79,7 @@ class SubTemplatesFunctionalSpec extends AbstractFunctionalSpec {
     }
 
     def "Generate command fails gracefully when subtemplate post-install script throws exception"() {
-        given: "A new project created from a Lazybones template"
+        given: "A new project created from a Skeletor template"
         def appDir = createProjectWithSubTemplates()
 
         when: "I run the generate command with a bad template"
@@ -94,7 +94,7 @@ class SubTemplatesFunctionalSpec extends AbstractFunctionalSpec {
     }
 
     def "Generate command displays exception from post-install script with --stacktrace"() {
-        given: "A new project created from a Lazybones template"
+        given: "A new project created from a Skeletor template"
         def appDir = createProjectWithSubTemplates()
 
         when: "I run the generate command with a bad template"
@@ -109,7 +109,7 @@ class SubTemplatesFunctionalSpec extends AbstractFunctionalSpec {
     }
 
     def "Generate command fails gracefully when invoked inside a non-Lazybones project directory"() {
-        given: "A new directory that is not a project created by Lazybones"
+        given: "A new directory that is not a project created by Skeletor"
         def appDir = new File(baseWorkDir, "otherapp")
         appDir.mkdirs()
 
@@ -120,7 +120,7 @@ class SubTemplatesFunctionalSpec extends AbstractFunctionalSpec {
         exitCode == 1
 
         and: "It prints a warning, but no exception"
-        output =~ "You cannot use `generate` here: this is not a Lazybones-created project"
+        output =~ "You cannot use `generate` here: this is not a Skeletor-created project"
         !(output =~ "Exception")
     }
 
