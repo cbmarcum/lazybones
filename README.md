@@ -1,12 +1,11 @@
 Skeletor Project Creation Tool
 ===============================
-Skeletor is fork of the popular [Lazybones](https://github.com/pledbrook/lazybones) 
+Skeletor is a fork of the popular [Lazybones](https://github.com/pledbrook/lazybones) 
 project created by Peter Ledbrook. Though unmaintained for some time, Lazybones 
 continued to be used by other projects as a means to generate project layouts 
 from templates and it was distributed on [SDKMAN](https://sdkman.io/) which made it 
 more convenient to install and use. This came to an end with the [shutdown of Bintray.](https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/)
- Since this is where the application binaries and "built-in" templates lived and 
-SDKMAN stopped distribution as the binaries were no longer available.
+ in May 2021.  Since this is where the application binaries and "built-in" templates lived,  SDKMAN stopped distribution as the binaries were no longer available.
 
 My goal is to get Skeletor updated and distributed on SDKMAN. As that is not the 
 case yet, I'll document the manual installation process as well.
@@ -15,8 +14,8 @@ The big changes from Lazybones are:
 1. The new project name and the application command are both now 'skeletor'.
 2. The user profile directory for configurations and template cache is now $USER_HOME/.skeletor
 3. Bintray repositories are no longer available. Eventually this configuration will be removed.
-4. A new URL based repository has been implemented for use by listing and creating projects from it.
-Publishing to the repository is not yet implemented. Manual steps are trivial and documented below.
+4. A new URL based simple repository has been implemented that supports listing and creating projects from it.
+Publishing to the simple repository is not yet implemented. Manual steps are trivial and documented below.
 
 Existing Lazybones templates should still work if moved to a URL repository as described below.
 The .lazybones subdirectory created in project templates has been continued here for compatibility purposes.
@@ -215,8 +214,6 @@ Note that you do not specify a version with the `generate` command. This is
 because the subtemplates are embedded directly in the project template, and
 so there can only be one version available to you.
 
-
-
 ## Configuration
 
 Skeletor will run out of the box without any extra configuration, but the tool
@@ -227,28 +224,28 @@ of precedence:
 1.   System properties of the form `lazybones.*`, which can be passed into the app
 via either `JAVA_OPTS` or `LAZYBONES_OPTS` environment variables. For example:
 
-        env JAVA_OPTS="-Dlazybones.config.file=/path/to/my-custom-default-config.groovy" lazybones ...
+    env JAVA_OPTS="-Dlazybones.config.file=/path/to/my-custom-default-config.groovy" lazybones ...
 
-    Highest precedence, i.e. it overrides all other sources of setting data.
+Highest precedence, i.e. it overrides all other sources of setting data.
 
 2.   User configuration file in `$USER_HOME/.skeletor/config.groovy`. This is parsed
 using Groovy's `ConfigSlurper`, so if you're familiar with that syntax you'll be
 right at home. Otherwise, just see the examples below.
 
-3.   (Since 0.8) A JSON configuration file in `$USER_HOME/.skeletor/managed-config.groovy`
+3.   A JSON configuration file in `$USER_HOME/.skeletor/managed-config.groovy`
 that is used by the `config` commands. You can edit it this as well.
 
 4.   A Groovy-based default configuration file that is provided by the application
 itself, but you can specify an alternative file via the `lazybones.config.file`
 system property.
 
-Lazybones also provides a convenient mechanism for setting and removing options
+Skeletor also provides a convenient mechanism for setting and removing options
 via the command line: the `config` command.
 
 ### Command line configuration
 
 The `config` command provides several sub-commands that allow you to interact with
-the persisted Lazybones configuration; specifically, the JSON config file. You
+the persisted Skeletor configuration; specifically, the JSON config file. You
 run a sub-command via
 
     skeletor config <sub-cmd> <args>
@@ -288,20 +285,55 @@ So what configuration settings are you likely to customise?
 Skeletor will by default download the templates from a specific repository as 
 mentioned in the Creating Projects section. If you want to host template packages 
 in a different repository you can add it to Skeletor's search path via the `simpleRepositories`
-setting as a comma seperated list:
+setting as a comma seperated list in $HOME/.skeletor/config.groovy:
 
     simpleRepositories = [
-      "https://codebuilders.jfrog.io/artifactory/default-generic-local/skeletor-templates"
+      "https://your.domain.tld/repo-dir"
     ]
+
+Or in $HOME/.skeletor/managed-config.json:
+
+    {
+        "simpleRepositories": [
+            "https://your.domain.tld/repo-dir"
+        ]
+    }
+
+To add a simple repository listing to the managed configuration file:
+
+    skeletor config add simpleRepositories "https://your.domain.tld/repo-dir"
+
+This will also create the file if it doesn't exist yet.
 
 If a template exists in more than one repository, it will be downloaded from the
 first repository in the list that it appears in.
 
+### Repository manifest
+
+Where Lazybones used web services to list and create projects from templates stored 
+on Bintray, Skeletor uses a simple `skeletor-manifest.txt` file located in the 
+repository to provide the necessary information. This file is in the CSV format.
+
+    name,version,owner,description
+    aoo-addin-java-template,0.3.0,"Code Builders, LLC","Apache OpenOffice Add-In Template for Java"
+    aoo-addin-template,0.3.0,"Code Builders, LLC","Apache OpenOffice Add-In Template for Groovy"
+    aoo-addon-java-template,0.3.0,"Code Builders, LLC","Apache OpenOffice Add-On Template for Java"
+    aoo-addon-template,0.3.0,"Code Builders, LLC","Apache OpenOffice Add-On Template for Groovy"
+    aoo-client-template,0.3.0,"Code Builders, LLC","Apache OpenOffice Client Template for Groovy"
+
+Note that the template name has a `-template` suffix. The zip file packages have a 
+similar format of `<name>-template-<version>.zip`
+
+When listing or creating projects from templates the `-template` is omitted. It is 
+also removed from the zip file name when it is copied into the local cache directory 
+when first used.
+
 ### Package aliases
 
-If you regularly use a template at a specific URL rather than from Bintray, then
-you will want to alias that URL to a name. That's where template mappings (or
-aliases) come in. The aliases are defined as normal settings of the form
+If you regularly use a template at a specific URL rather than from the default or 
+configured repository, then you will want to alias that URL to a name. 
+That's where template mappings (or aliases) come in. The aliases are defined as 
+normal settings of the form
 
     templates.mappings.<alias> = <url>
 
@@ -326,7 +358,7 @@ configuration.
 Many people have to work behind a proxy, one way to do it is to add the relevant system
 properties to a `JAVA_OPTS` environment variable. There is also another option.
 
-Skeletor has stolen the idea of having a special form of configuration option for
+Skeletor has borrowed the idea of having a special form of configuration option for
 system properties from Gradle. So if you define a property with a `systemProp.`
 prefix, it will be added as a system property internally. So to configure an HTTP
 proxy, you only need to add the following to your Skeletor configuration:
@@ -368,11 +400,11 @@ These are miscellaneous options that can be overridden on the command line:
 
 The logging level can either be overridden using the same `logLevel` setting:
 
-    lazybones --logLevel SEVERE info ratpack
+    skeletor --logLevel SEVERE info aoo-addin
 
 or via `--verbose`, `--quiet`, and `--info` options:
 
-    lazybones --verbose info ratpack
+    lazybones --verbose info aoo-addin
 
 The logging level can be one of:
 
@@ -386,25 +418,29 @@ The logging level can be one of:
 
 ## Building it
 
-This project is split into two parts:
+This project is split into three parts:
 
-1. The lazybones command line tool; and
-2. The project templates.
+1. The [Skeletor command line tool](https://github.com/cbmarcum/skeletor/tree/master/lazybones-app)
+2. The [Skeletor Gradle plugin](https://github.com/cbmarcum/skeletor/tree/master/lazybones-gradle-plugin) 
+3. The [project templates](https://github.com/cbmarcum/skeletor/tree/master/lazybones-templates)
 
 ### The command line tool
 
 The command line tool is created via Gradle's application plugin. The main
 class is `uk.co.cacoethes.lazybones.LazyBonesMain`, which currently implements
-all the sub-commands (create, list, etc.) as concrete methods.
+all the sub-commands (create, list, etc.) as command classes.
 
-The main class plus everything else under src/main is packaged into a lazybones
-JAR that is included in the distribution zip. The application Gradle plugin
-generates a `lazybones` script that then runs the main class with all required
-dependencies on the classpath.
+The main class plus everything else under src/main is packaged into a `skeletor-app-<version>.jar` 
+that is included in the distribution zip. The Gradle application plugin generates 
+a `skeletor` shell script and a `skeletor.bat` script that then runs the main 
+class with all required dependencies on the classpath.
 
-To build the distribution, simply run
+To build the distribution, from the skeletor project top level directort simply 
+run:
 
     ./gradlew distZip
+
+You will find the application packaged in `build/distributions/skeletor-<version>.zip`
 
 ### The project templates
 
