@@ -200,8 +200,15 @@ USAGE: list
     }
 
     private static File[] findMatchingTemplates(File dir, Pattern pattern) {
-        dir.listFiles( { File f ->
-            pattern.matcher(f.name).matches()
-        } as FileFilter).sort { it.name }
+
+        if (dir.exists()) {
+            File[] files = dir.listFiles({ File f ->
+                pattern.matcher(f.name).matches()
+            } as FileFilter).sort { it.name }
+            return files
+        } else {
+            File[] files = []
+            return files
+        }
     }
 }
