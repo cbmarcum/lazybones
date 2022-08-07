@@ -11,7 +11,7 @@ archivesBaseName = 'skeletor-app'
 
 applicationName = "skeletor"
 mainClassName = "uk.co.cacoethes.lazybones.LazybonesMain"
-version = "0.9.2-SNAPSHOT"
+version = "0.10.0"
 
 // These settings mimic the old client VM behavior. Should result in faster startup.
 applicationDefaultJvmArgs = ["-XX:+TieredCompilation", "-XX:TieredStopAtLevel=1", "-XX:CICompilerCount=3"]
