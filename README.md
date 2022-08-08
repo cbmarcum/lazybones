@@ -55,13 +55,13 @@ extras (controllers, scaffolding etc.) inside a project.
 * [Andy Duncan](https://github.com/andyjduncan)
 
 
-## Running it
+## Running Skeletor
 
 Grab the distribution [from our JFrog repo](https://codebuilders.jfrog.io/artifactory/generic/skeletor-app),
 unpack it to a local directory, and then add its 'bin' directory to your `PATH`
 environment variable.
 
-### Finding out what templates are available
+### Finding Available Templates
 
 To see what templates you can install, run
 
@@ -107,7 +107,7 @@ Example
     More information at https://codebuilders.jfrog.io/artifactory/generic/skeletor-templates
 
 
-### Creating projects
+### Creating Projects
 
 To create a new project, run
 
@@ -181,7 +181,7 @@ The last option to mention is `--with-git` which will automatically create a
 new git repository in the project directory. The only requirement is that you
 have the `git` command on your path.
 
-### Sub-templates
+### Sub-Templates
 
 Project templates can incorporate subtemplates.
 Imagine that you have just created a new web application project from a template
@@ -242,7 +242,7 @@ system property.
 Skeletor also provides a convenient mechanism for setting and removing options
 via the command line: the `config` command.
 
-### Command line configuration
+### Command Line Configuration
 
 The `config` command provides several sub-commands that allow you to interact with
 the persisted Skeletor configuration; specifically, the JSON config file. You
@@ -280,7 +280,7 @@ where `<sub-cmd>` is one of:
 
 So what configuration settings are you likely to customise?
 
-### Custom repositories
+### Custom Repositories
 
 Skeletor will by default download the templates from a specific repository as 
 mentioned in the Creating Projects section. If you want to host template packages 
@@ -308,7 +308,7 @@ This will also create the file if it doesn't exist yet.
 If a template exists in more than one repository, it will be downloaded from the
 first repository in the list that it appears in.
 
-### Repository manifest
+### Repository Manifest
 
 Where Lazybones used web services to list and create projects from templates stored 
 on Bintray, Skeletor uses a simple `skeletor-manifest.txt` file located in the 
@@ -328,7 +328,7 @@ When listing or creating projects from templates the `-template` is omitted. It 
 also removed from the zip file name when it is copied into the local cache directory 
 when first used.
 
-### Package aliases
+### Package Aliases
 
 If you regularly use a template at a specific URL rather than from the default or 
 configured repository, then you will want to alias that URL to a name. 
@@ -353,7 +353,7 @@ Alternatively, add them from the command line like this:
 The aliases will always be available to you until you remove them from the persisted
 configuration.
 
-### Setting a proxy (and other system properties)
+### Setting a Proxy (and other system properties)
 
 Many people have to work behind a proxy, one way to do it is to add the relevant system
 properties to a `JAVA_OPTS` environment variable. There is also another option.
@@ -390,7 +390,7 @@ properties:
 As with the host and port, there are `https` variants of the username and password
 as well.
 
-### General options
+### General Options
 
 These are miscellaneous options that can be overridden on the command line:
 
@@ -416,7 +416,7 @@ The logging level can be one of:
 * FINEST
 * ALL
 
-## Building it
+## Building
 
 This project is split into three parts:
 
@@ -424,7 +424,7 @@ This project is split into three parts:
 2. The [Skeletor Gradle plugin](https://github.com/cbmarcum/skeletor/tree/master/lazybones-gradle-plugin) 
 3. The [project templates](https://github.com/cbmarcum/skeletor/tree/master/lazybones-templates)
 
-### The command line tool
+### Command Line Tool
 
 The command line tool is created via Gradle's application plugin. The main
 class is `uk.co.cacoethes.lazybones.LazyBonesMain`, which currently implements
@@ -435,88 +435,102 @@ that is included in the distribution zip. The Gradle application plugin generate
 a `skeletor` shell script and a `skeletor.bat` script that then runs the main 
 class with all required dependencies on the classpath.
 
-To build the distribution, from the skeletor project top level directort simply 
+To build the distribution, from the skeletor project top level directory simply 
 run:
 
     ./gradlew distZip
 
 You will find the application packaged in `build/distributions/skeletor-<version>.zip`
 
-### The project templates
+Unpack the zip file contents to anywhere you keep such applications and add the 
+`bin` subdirectory to your system path to get the `skeletor` command.  
+The `$HOME/.skeletor` profile directory will be created after the first `create` 
+or `config` command is ran.
+
+### Skeletor Gradle Plugin
+
+The Skeletor Gradle plugin has its own README.md in 
+[lazybones-gradle-plugin](https://github.com/cbmarcum/skeletor/tree/master/lazybones-gradle-plugin)
+
+### Project Templates
 
 The project templates are simply directory structures with whatever files in
 them that you want. Ultimately, the template project directories will be zipped
-up and stored on [Bintray](https://bintray.com/repo/browse/pledbrook/lazybones-templates).
-From there, lazybones downloads the zips on demand and caches them in a local
-user directory (currently ~/.lazybones/templates).
+up and placed in a repository which is a directory at a URL (`file` or `http(s)`) 
+that contains a `skeletor-manifest.txt` with entries for each template version 
+available. From there, Skeletor downloads the zips on demand and caches them in 
+a local user directory (currently `$HOME/.skeletor/templates`).
 
 If you want empty directories to form part of the project template, then simply
-add an empty .retain file to each one. When the template archive is created,
-any .retain files are filtered out (but the containing directories are included).
+add an empty `.retain` file to each one. When the template archive is created,
+any `.retain` files are filtered out (but the containing directories are included).
 
-To package up a template, simply run
+To package up a template, simply run this from the directory with the 
+`build.gradle` file. Usually right above the `templates` directory that 
+contains the templates which are the sub-directories.
 
     ./gradlew packageTemplate<TemplateName>
 
 The name of the project template comes from the containing directory, which is
 assumed to be lowercase hyphenated. The template name is the equivalent camel
-case form. So the template directory structure in src/templates/my-template
-results in a template called 'MyTemplate', which can be packaged with
+case form. So the template directory structure in `templates/my-template`
+results in a template called 'MyTemplate', which can be packaged with:
 
     ./gradlew packageTemplateMyTemplate
 
 The project template archive will be created in the build directory with the
-name '<template name>-template-<version>.zip'. See the small section below on
+name `<template name>-template-<version>.zip`. See the small section below on
 how the template version is derived.
 
 You can also package all the templates in one fell swoop:
 
     ./gradlew packageAllTemplates
 
-Once a template is packaged up, you can publish it to a generic (non-Maven)
-Bintray repository by running
+Publishing templates is currently not supported since Bintray is shut down the 
+publishing commands will fail.
 
     ./gradlew publishTemplate<TemplateName>
-
-This will initially fail, because the build does not know where to publish to.
-That's quickly fixed by adding a gradle.properties file in the root of this
-project that contains at least these properties:
-
-    repo.username=your_bintray_username
-    repo.apiKey=your_bintray_apikey
-
-You can then publish new versions of templates whenever you want. Note that you
-cannot _republish_ with this mechanism, so remember to increment the version if
-you need to.
-
-Finally, you can publish the whole shebang (unusual) with
+and:
 
     ./gradlew publishAllTemplates
 
-If you don't want to publish your template you can install it locally using the
-installTemplate rule.
+Manual publishing is a simple matter of creating a `skeltor-manifest.txt` file 
+with a CSV format with a header and entries for each template version you want 
+to make available for Skeletor like:
+
+    name,version,owner,description
+    aoo-addin-java-template,0.3.0,"Code Builders, LLC","Apache OpenOffice Add-In Template for Java"
+    aoo-addin-template,0.3.0,"Code Builders, LLC","Apache OpenOffice Add-In Template for Groovy"
+    aoo-addon-java-template,0.3.0,"Code Builders, LLC","Apache OpenOffice Add-On Template for Java"
+    aoo-addon-template,0.3.0,"Code Builders, LLC","Apache OpenOffice Add-On Template for Groovy"
+    aoo-client-template,0.3.0,"Code Builders, LLC","Apache OpenOffice Client Template for Groovy"
+
+Then place the manifest and template zip files at the URL you use for your repository.
+
+If you don't want to publish your template at a URL you can install it locally 
+using the installTemplate rule.
 
      ./gradlew installTemplate<TemplateName>
 
-This will install the template to ~/.lazybones/templates so that you can use it without
-moving it to bintray first.
+This will install the template to `$HOME/.skeletor/templates` so that you can use 
+it without moving it to a URL first. To list them you will need to use the 
+`skeletor list --cached` command since they are not in a repository also.
 
 And that's it for the project templates.
 
-#### Template versions
+#### Template Versions
 
 You define the version of a template by putting a VERSION file in the root
 directory of the template that contains just the version number. For example,
 you specify a version of 1.2.8 for the my-template template by adding the file
-src/templates/my-template/VERSION with the contents
+`templates/my-template/VERSION` with the contents
 
     1.2.8
 
 That's it! The VERSION file will automatically be excluded from the project
 template archive.
 
-Contributing templates
+Contributing Templates
 ----------------------
-
-Read the [Template Developers Guide](https://github.com/pledbrook/lazybones/wiki/Template-developers-guide)
-for information on how to create and publish Lazybones templates.
+Read the [Template Developers Guide](https://github.com/cbmarcum/skeletor/wiki/Template-Developers-Guide)
+for information on how to create and publish Skeletor templates.
