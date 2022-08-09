@@ -7,8 +7,13 @@ from templates and it was distributed on [SDKMAN](https://sdkman.io/) which made
 more convenient to install and use. This came to an end with the [shutdown of Bintray.](https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/)
  in May 2021.  Since this is where the application binaries and "built-in" templates lived,  SDKMAN stopped distribution as the binaries were no longer available.
 
-My goal is to get Skeletor updated and distributed on SDKMAN. As that is not the 
-case yet, I'll document the manual installation process as well.
+We will continue to refer to the templates as Lazybones templates as so many 
+projects have been created from them and that is how they are best known. The 
+template structure has not been changed so we see know reason to rebrand what the 
+templates are called.
+
+Our goal is to get Skeletor updated and distributed on SDKMAN. As that is not the 
+case yet, We'll document the manual installation process as well.
 
 The big changes from Lazybones are: 
 1. The new project name and the application command are both now 'skeletor'.
@@ -18,10 +23,6 @@ The big changes from Lazybones are:
 Publishing to the simple repository is not yet implemented. Manual steps are trivial and documented below.
 
 Existing Lazybones templates should still work if moved to a URL repository as described below.
-The .lazybones subdirectory created in project templates has been continued here for compatibility purposes.
-This maybe changed in a future major version release.
-
-The following content is updated from the original docs... (Work in progress!!)
 
 The tool is very simple: it allows you to create a new project structure for
 any framework or library for which the tool has a template. 
@@ -159,7 +160,7 @@ have already created the project directory, then just pass '.' as the directory:
     skeletor create ratpack .
 
 Once you have created a new project from a template, you may notice that the
-project directory contains a .lazybones sub directory. You may delete this, but
+project directory contains a .lazybones sub-directory. You may delete this, but
 then you won't be able to use the `generate` command (see next section) if the
 project template has support for it.
 
@@ -404,7 +405,7 @@ The logging level can either be overridden using the same `logLevel` setting:
 
 or via `--verbose`, `--quiet`, and `--info` options:
 
-    lazybones --verbose info aoo-addin
+    skeletor --verbose info aoo-addin
 
 The logging level can be one of:
 
@@ -452,7 +453,7 @@ or `config` command is ran.
 The Skeletor Gradle plugin has its own README.md in 
 [lazybones-gradle-plugin](https://github.com/cbmarcum/skeletor/tree/master/lazybones-gradle-plugin)
 
-### Project Templates
+### Lazybones Project Templates
 
 The project templates are simply directory structures with whatever files in
 them that you want. Ultimately, the template project directories will be zipped
@@ -532,5 +533,7 @@ template archive.
 
 Contributing Templates
 ----------------------
-Read the [Template Developers Guide](https://github.com/cbmarcum/skeletor/wiki/Template-Developers-Guide)
-for information on how to create and publish Skeletor templates.
+Read the [Template Developers Guide][1]
+for information on how to create and publish project templates.
+
+[1]:https://github.com/cbmarcum/skeletor/wiki/Template-Developers-Guide

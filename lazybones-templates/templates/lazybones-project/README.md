@@ -1,4 +1,4 @@
-Lazybones template project
+Lazybones Template Project
 --------------------------
 
 You have just created a simple project for managing your own Lazybones project
@@ -7,18 +7,13 @@ your templates in (`templates`).
 
 To get started, simply create new directories under the `templates` directory
 and put the source of the different project templates into them. You can then
-package and install the templates locally with the command:
+package them all together or individually and publish them at a `file` or `http(s)` 
+URL or install them into your local Skeletor cache directory.
 
-    ./gradlew installAllTemplates
+You'll then be able to use Skeletor to create new projects from these templates.
 
-You'll then be able to use Lazybones to create new projects from these templates.
-If you then want to distribute them, you will need to set up a Bintray account,
-populate the `repositoryUrl`, `repositoryUsername` and `repositoryApiKey` settings
-in `build.gradle`, add new Bintray packages in the repository via the Bintray
-UI, and finally publish the templates with
+You can find out more about creating templates in the [Template Developers Guide][1] 
+and more about publishing templates in repositories in Skeletor project [README][2].
 
-    ./gradlew publishAllTemplates
-
-You can find out more about creating templates on [the GitHub wiki][1].
-
-[1]: https://github.com/pledbrook/lazybones/wiki/Template-developers-guide
+[1]:https://github.com/cbmarcum/skeletor/wiki/Template-Developers-Guide
+[2]:https://github.com/cbmarcum/skeletor/blob/master/README.md
