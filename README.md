@@ -466,9 +466,11 @@ If you want empty directories to form part of the project template, then simply
 add an empty `.retain` file to each one. When the template archive is created,
 any `.retain` files are filtered out (but the containing directories are included).
 
-To package up a template, simply run this from the directory with the 
+To package up a template contained in a template project created from the 
+`lazybones-project` template, simply run this from the directory with the 
 `build.gradle` file. Usually right above the `templates` directory that 
-contains the templates which are the sub-directories.
+contains the templates which are the sub-directories. For core templates in 
+this project, run from the Skeletor project root directory.
 
     ./gradlew packageTemplate<TemplateName>
 
