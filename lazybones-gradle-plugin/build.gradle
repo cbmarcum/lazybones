@@ -150,7 +150,7 @@ pluginBundle {
 }
 gradlePlugin {
     plugins {
-        gradletestPlugin {
+        skeletorPlugin {
             id = 'net.codebuilders.lazybones-templates'
             displayName = 'Lazybones template plugin'
             description = 'A Gradle plugin to aid the packaging and distribution of Lazybones templates.'
