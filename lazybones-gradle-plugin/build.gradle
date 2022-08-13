@@ -2,23 +2,27 @@
 * ./gradlew publish
 * or to publish locally
 * ./gradlew publishToMavenLocal
+* or to publish to gradle plugins
+* ./gradlew publishPlugins
 *
 * to update this wrapper version
 * $ gradle wrapper --gradle-version 6.7 --distribution-type all
 */
 
 plugins {
-    id 'maven-publish'
-    id 'java-gradle-plugin'
     id 'groovy'
     id 'signing'
+    // Apply the Plugin Publish plugin to make plugin publication possible.
+    // The Plugin Publish plugin will in turn auto-apply the Gradle Plugin Development Plugin (java-gradle-plugin)
+    // and the Maven Publish plugin (maven-publish).
+    id "com.gradle.plugin-publish" version "1.0.0"
 }
 
 // ignored by publish but used with jar task alone
 archivesBaseName = "skeletor-gradle"
 group = "net.codebuilders"
 // version = "${skeletorGradlePluginVersion}"
-version = '1.3.1'
+version = '1.3.2' // bumped to v1.4 for gradle repo
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -115,12 +119,6 @@ publishing {
                 }
             } // pluginMaven
 
-            autoUpdatePluginMarkerMaven {
-                pom {
-                    name = 'Skeletor Gradle Plugin marker artifact'
-                }
-            }
-
 
         } // publications
 
@@ -145,10 +143,17 @@ signing {
     // sign configurations.archives
 }
 
+pluginBundle {
+    website = 'https://github.com/cbmarcum/skeletor/tree/master/lazybones-gradle-plugin'
+    vcsUrl = 'https://github.com/cbmarcum/skeletor.git'
+    tags = ['skeletor', 'lazybones', 'template']
+}
 gradlePlugin {
     plugins {
-        autoUpdate {
+        gradletestPlugin {
             id = 'net.codebuilders.lazybones-templates'
+            displayName = 'Lazybones template plugin'
+            description = 'A Gradle plugin to aid the packaging and distribution of Lazybones templates.'
             implementationClass = 'uk.co.cacoethes.gradle.LazybonesTemplatesPlugin'
         }
     }
