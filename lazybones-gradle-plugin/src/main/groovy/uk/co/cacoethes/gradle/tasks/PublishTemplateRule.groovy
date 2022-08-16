@@ -10,7 +10,7 @@ import uk.co.cacoethes.gradle.util.NameConverter
 
 /**
  * <p>A rule that creates tasks for publishing a Lazybones template package for a
- *  Simple URL repository. The tasks have the name 'publishTemplate<templateName>',
+ * Simple URL repository. The tasks have the name 'publishTemplate<templateName>',
  * where the template name is in camel-case. The publish tasks are automatically
  * configured to depend on the corresponding package task defined by
  * {@link PackageTemplateRule}.</p>
@@ -45,7 +45,7 @@ class PublishTemplateRule implements Rule {
                 dependsOn pkgTask
                 artifactFile = pkgTask.archivePath
 
-                // we now need:
+                // for publishing manifest
                 // name,version,owner,description
                 packageName = pkgTask.baseName
                 version = pkgTask.version
@@ -77,28 +77,10 @@ For example, in your build file:
                     }
                 } // doFirst
 
-                // doLast creates the task action
-                doLast {
-                    addManifestEntry(packageName, version, tmplOwner, tmplDescription, tmplDestination)
-                }
-
             } // with
         } // m (matcher)
     }
 
-    protected void addManifestEntry(String packageName, String version, String tmplOwner,
-                                    String tmplDescription, String tmplDestination) {
-
-        File destinationDir = new File(tmplDestination)
-        destinationDir.mkdirs()
-        String fs = File.separator
-        File manifest = new File("${tmplDestination}${fs}skeletor-manifest.txt")
-
-        if (manifest.createNewFile()) {
-            manifest << "name,version,owner,description\n"
-        }
-        manifest << "${packageName},${version},${tmplOwner},${tmplDescription}\n"
-    }
 
     protected String taskToTemplateName(String requestedTemplateName) {
         // The rule supports tasks of the form packageTemplateMyTmpl and
