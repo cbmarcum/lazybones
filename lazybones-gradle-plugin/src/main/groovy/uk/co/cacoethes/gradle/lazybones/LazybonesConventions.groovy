@@ -85,6 +85,9 @@ class LazybonesConventions {
      */
     boolean publish
 
+    /** The template project owner to be listed in the template manifest metadata. */
+    String templateOwner
+
     LazybonesConventions(Project project) {
         this.project = project
     }
