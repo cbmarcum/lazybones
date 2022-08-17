@@ -1,14 +1,20 @@
 plugins {
-    id "net.codebuilders.lazybones-templates" version "1.3.2"
+    id "net.codebuilders.lazybones-templates" version "${lazybonesGradlePluginVersion}"
 }
 
-import uk.co.cacoethes.gradle.tasks.BintrayGenericUpload
+import uk.co.cacoethes.gradle.tasks.SimpleManifestEntry
+
+
+// template specific properties use this format
+// lazybones {
+//     template("simple-java") {     // Template (directory) name
+//         packageExclude "**/*.swp", ".settings"
+//     }
+// }
 
 lazybones {
-    licenses = ["Apache-2.0"]
-    publish = false
-    repositoryName = "pledbrook/lazybones-templates"
     packageExclude "**/*.swp", "**/*.swo", "**/.gradle"
+    templateOwner = "Carl Marcum"
 }
 
 // Lazy initialisation of Bintray upload tasks so that not all build users need
@@ -16,12 +22,12 @@ lazybones {
 // executing the publish tasks.
 gradle.taskGraph.whenReady { graph ->
     if (graph.allTasks.any { it.name.startsWith("publish") }) {
-        verifyProperty(project, 'repo.username')
-        verifyProperty(project, 'repo.apiKey')
+        // verifyProperty(project, 'repo.username')
+        // verifyProperty(project, 'repo.apiKey')
 
-        graph.allTasks.findAll { it instanceof BintrayGenericUpload }.each { task ->
-            task.username = project.'repo.username'
-            task.apiKey = project.'repo.apiKey'
+        graph.allTasks.findAll { it instanceof SimpleManifestEntry }.each { task ->
+            // task.username = project.'repo.username'
+            // task.apiKey = project.'repo.apiKey'
         }
     }
 }
