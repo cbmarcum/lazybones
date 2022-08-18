@@ -466,40 +466,42 @@ If you want empty directories to form part of the project template, then simply
 add an empty `.retain` file to each one. When the template archive is created,
 any `.retain` files are filtered out (but the containing directories are included).
 
-To package up a template contained in a template project created from the 
+Publishing templates previously included uploading the templates to your 
+Bintray account. Since Bintray is no longer available, Skeletor has replaced 
+this with creating a manifest file that contains the template metadata needed 
+by the command line application for listing template information. This manifest 
+file along with the template packages form a Simple URL based repository.
+
+To publish a template contained in a template project created from the 
 `lazybones-project` template, simply run this from the directory with the 
 `build.gradle` file. Usually right above the `templates` directory that 
-contains the templates which are the sub-directories. For core templates in 
-this project, run from the Skeletor project root directory.
+contains the templates which are the sub-directories. 
 
-    ./gradlew packageTemplate<TemplateName>
+    ./gradlew publishTemplate<TemplateName>
+
+For core templates in this project, run from the Skeletor project root 
+directory and include the `l`azybones-templates` sub-project:
+
+    ./gradlew :lazybones-templates:publishTemplate<TemplateName>
 
 The name of the project template comes from the containing directory, which is
 assumed to be lowercase hyphenated. The template name is the equivalent camel
 case form. So the template directory structure in `templates/my-template`
-results in a template called 'MyTemplate', which can be packaged with:
+results in a template called 'MyTemplate', which can be published with:
 
-    ./gradlew packageTemplateMyTemplate
+    ./gradlew publishTemplateMyTemplate
 
 The project template archive will be created in the build directory with the
 name `<template name>-template-<version>.zip`. See the small section below on
 how the template version is derived.
 
-You can also package all the templates in one fell swoop:
-
-    ./gradlew packageAllTemplates
-
-Publishing templates is currently not supported since Bintray is shut down the 
-publishing commands will fail.
-
-    ./gradlew publishTemplate<TemplateName>
-and:
+You can also publish all the templates in one fell swoop:
 
     ./gradlew publishAllTemplates
 
-Manual publishing is a simple matter of creating a `skeltor-manifest.txt` file 
-with a CSV format with a header and entries for each template version you want 
-to make available for Skeletor like:
+The manifest file `skeletor-manifest.txt` is just a CSV formatted text file 
+with a header and entries for each template version you want to make available 
+for Skeletor like:
 
     name,version,owner,description
     aoo-addin-java-template,0.3.0,"Code Builders, LLC","Apache OpenOffice Add-In Template for Java"
@@ -508,7 +510,16 @@ to make available for Skeletor like:
     aoo-addon-template,0.3.0,"Code Builders, LLC","Apache OpenOffice Add-On Template for Groovy"
     aoo-client-template,0.3.0,"Code Builders, LLC","Apache OpenOffice Client Template for Groovy"
 
-Then place the manifest and template zip files at the URL you use for your repository.
+The template packages and manifest are output to the `build/packages`. Then you need 
+to place the manifest and template zip files at the URL you use for your repository.
+
+If you only want to create the packages without the manifest file you can use 
+the package tasks
+
+    ./gradlew packageTemplate<TemplateName>
+and:
+
+    ./gradlew packageAllTemplates
 
 If you don't want to publish your template at a URL you can install it locally 
 using the installTemplate rule.
@@ -530,7 +541,14 @@ you specify a version of 1.2.8 for the my-template template by adding the file
 
     1.2.8
 
-That's it! The VERSION file will automatically be excluded from the project
+### Template Description
+
+Skeletor requires a `DESCRIPTION` file that contains a description for the 
+template.
+
+    A project for managing Lazybones project templates.
+
+That's it! The `VERSION` and `DESCRIPTION` files will automatically be excluded from the project
 template archive.
 
 Contributing Templates
