@@ -11,14 +11,19 @@ pluginManagement {
         }
     }
     repositories {
-        // mavenLocal() // testing gradle plugin snapshots from local only
+        // testing gradle plugin snapshots from local only
+        // mavenLocal()
+
+        // testing releases from our artifactory repo not yet in plugins.gradle.org
+        /*
         maven {
             url 'https://codebuilders.jfrog.io/artifactory/cb-gradle-release'
         }
+         */
+
         gradlePluginPortal()
     }
 }
-
 
 // The plugin is build separately because these 2 other projects depend on it as a 'plugin'
 include "lazybones-templates", "lazybones-app"
