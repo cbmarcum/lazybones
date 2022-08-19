@@ -7,7 +7,7 @@ from templates and it was distributed on [SDKMAN](https://sdkman.io/) which made
 more convenient to install and use. This came to an end with the [shutdown of Bintray.](https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/)
  in May 2021.  Since this is where the application binaries and "built-in" templates lived,  SDKMAN stopped distribution as the binaries were no longer available.
 
-We will continue to refer to the templates as Lazybones templates as so many 
+We will continue to refer to the templates as Lazybones templates because so many 
 projects have been created from them and that is how they are best known. The 
 template structure has not been changed, except to add a description file, so 
 we see no reason to rebrand what the templates are called.
@@ -20,7 +20,8 @@ The big changes from Lazybones are:
 2. The user profile directory for configurations and template cache is now $USER_HOME/.skeletor
 3. Bintray repositories are no longer available. Eventually this configuration will be removed.
 4. A new URL based simple repository has been implemented that supports listing and creating projects from it.
-Publishing to the simple repository is not yet implemented. Manual steps are trivial and documented below.
+Publishing to the simple repository is not yet implemented but only require copying the created 
+published manifest file and the template packages to your URL repository.
 
 Existing Lazybones templates should still work if moved to a URL repository as described below.
 
@@ -29,7 +30,7 @@ any framework or library for which the tool has a template.
 
 The concept of Skeletor is very similar to Maven archetypes, and what [Yeoman](http://yeoman.io/)
 does for web applications. Skeletor also includes a subtemplates feature that
-resembles the behaviour of Yeoman's sub-generators, allowing you to generate optional
+resembles the behavior of Yeoman's sub-generators, allowing you to generate optional
 extras (controllers, scaffolding etc.) inside a project.
 
 ## Skeletor Developer
@@ -58,8 +59,11 @@ extras (controllers, scaffolding etc.) inside a project.
 
 ## Running Skeletor
 
-Grab the distribution [from our JFrog repo](https://codebuilders.jfrog.io/artifactory/generic/skeletor-app),
-unpack it to a local directory, and then add its 'bin' directory to your `PATH`
+Grab the distribution [from our JFrog repo](https://codebuilders.jfrog.io/artifactory/generic/skeletor-app) or use curl:
+
+    curl -o skeletor-<version>.zip -L https://codebuilders.jfrog.io/artifactory/generic/skeletor-app/<version>/skeletor-<version>.zip
+
+Unpack it to a local directory, and then add its 'bin' directory to your `PATH`
 environment variable.
 
 ### Finding Available Templates
