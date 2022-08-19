@@ -36,7 +36,7 @@ or using the legacy plugin application:
 
 ## Conventions & Required Configuration
 
-The Lazybones plugin relies on a whole set of conventions so that you can get
+The Skeletor plugin relies on a whole set of conventions so that you can get
 started as quickly and painlessly as possible. The basic directory structure
 that the plugin relies on looks like this:
 
@@ -52,7 +52,7 @@ Each directory under 'templates' contains the source files for one project
 template. The name of the project template derives from the name of the
 directory. In the above example, we end up with a project template named
 'mytmpl'. For more information on what goes inside these project template
-directories, see the [Template Developers Guide](https://github.com/pledbrook/lazybones/wiki/Template-developers-guide).
+directories, see the [Template Developers Guide](https://github.com/cbmarcum/skeletor/wiki/Template-Developers-Guide).
 
 The project structure isn't the whole story. There are three pieces of
 information that you must provide:
@@ -85,7 +85,7 @@ The plugin adds 3 rules and 3 concrete tasks to your project. The 3 rules are:
 as a zip file.
   
 * `installTemplate<TmplName>` - Copies the template package (the zip file) into
-your local Lazybones cache.
+your local Skeletor cache.
 
 * `publishTemplate<TmplName>` - Publishes the named template package to Bintray
 so that other people can use it.
@@ -107,11 +107,11 @@ template in your project:
 
 As long as you stick to the conventions, that's all you need.
  
-## Managing subtemplates
+## Managing Subtemplates
 
-As of version 0.7 of Lazybones, template authors can create subtemplates inside
-their project templates. These allow users to perform extra code generation in
-a project after it has been created from a Lazybones project template.
+Template authors can create subtemplates inside their project templates. These 
+allow users to perform extra code generation in a project after it has been 
+created from a Lazybones project template.
 
 From version 1.1 of the Gradle plugin you can easily set up subtemplates. There
 are basically two steps:
@@ -156,7 +156,7 @@ packages too.
 
 ## Advanced configuration
 
-Even though the Lazybones Gradle plugin makes use of conventions, you can still
+Even though the Skeletor Gradle plugin makes use of conventions, you can still
 override most of them by setting properties in the `lazybones` configuration
 block. Here is a selection of them:
 
@@ -169,22 +169,21 @@ files are created.
 * `installDir` - a `File` representing the location where template packages are
 installed to.
 
-* `licenses` - a list of licence names, such as "Apache-2.0". These are required
-if you would like the plugin to create the corresponding package in Bintray
-during the publish process. Otherwise, you'll have to manually create the
-package via Bintray's web UI.
+Since Skeletor publishing uses a manifest file and doesn't upload to
+Bintray like Lazybones did, these properties are not currenly used but left in 
+case they are needed for customized builds.
 
-* `publish` - a boolean determining whether packages should automatically be
-published in Bintray once they've been uploaded. The default is `false`, which
-is the preferred option as it gives you an opportunity to roll back the release.
+* `licenses` - a list of license names, such as "Apache-2.0".
 
-The full set of options are defined on the [`LazybonesConventions`](https://github.com/pledbrook/lazybones/blob/master/lazybones-gradle-plugin/src/main/groovy/uk/co/cacoethes/gradle/lazybones/LazybonesConventions.groovy)
+* `publish` - a boolean.
+
+The full set of options are defined on the [LazybonesConventions](https://github.com/cbmarcum/skeletor/blob/master/lazybones-gradle-plugin/src/main/groovy/uk/co/cacoethes/gradle/lazybones/LazybonesConventions.groovy)
 class.
 
 For more advanced use cases, you can configure the plugin's tasks directly. The
 package tasks are instances of the standard Gradle `Zip` task, while the install
 tasks are instances of the standard `Copy`.
 
-The package publishing is done through the [`BintrayGenericUpload`](https://github.com/pledbrook/lazybones/blob/master/lazybones-gradle-plugin/src/main/groovy/uk/co/cacoethes/gradle/tasks/BintrayGenericUpload.groovy),
-which you can use to defer initialisation of the publish credentials or any other
-properties.
+Currently, package publishing is done through the [SimpleManifestEntry](https://github.com/cbmarcum/skeletor/blob/master/lazybones-gradle-plugin/src/main/groovy/uk/co/cacoethes/gradle/tasks/SimpleManifestEntry.groovy),
+which packages one or all plugins and creates or updates a `skeletor-manifest.txt` 
+file for copying to your simple URL repository.
