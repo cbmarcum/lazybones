@@ -9,8 +9,8 @@ more convenient to install and use. This came to an end with the [shutdown of Bi
 
 We will continue to refer to the templates as Lazybones templates as so many 
 projects have been created from them and that is how they are best known. The 
-template structure has not been changed so we see know reason to rebrand what the 
-templates are called.
+template structure has not been changed, except to add a description file, so 
+we see no reason to rebrand what the templates are called.
 
 Our goal is to get Skeletor updated and distributed on SDKMAN. As that is not the 
 case yet, We'll document the manual installation process as well.
