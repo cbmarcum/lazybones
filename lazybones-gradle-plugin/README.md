@@ -54,8 +54,9 @@ directory. In the above example, we end up with a project template named
 'mytmpl'. For more information on what goes inside these project template
 directories, see the [Template Developers Guide](https://github.com/cbmarcum/skeletor/wiki/Template-Developers-Guide).
 
-The dedicated configuration block required by Lazybones in the build file used 
-for Bintray is now depricated.
+Lazybones required `repositoryName`, `repositoryUsername`, and `repositoryApiKey` 
+properties need for Bintray publishing to be in the `lazybones` configuration 
+block. These are deprecated in Skeletor.
 
     lazybones {
     	repositoryName = "<user>/<repo>"      // Bintray repository
