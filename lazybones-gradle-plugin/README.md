@@ -85,7 +85,7 @@ my-proj-template) and turns that into camel case for the template name (e.g.
 MyProjTemplate). So, to package and install one of your project templates, you
 just execute
 
-    gradle installTemplateMyProjTemplate
+    ./gradlew installTemplateMyProjTemplate
     
 Each of these rules has a corresponding task that applies the rule to every
 template in your project:
@@ -102,8 +102,7 @@ Template authors can create subtemplates inside their project templates. These
 allow users to perform extra code generation in a project after it has been 
 created from a Lazybones project template.
 
-From version 1.1 of the Gradle plugin you can easily set up subtemplates. There
-are basically two steps:
+There are basically two steps to setup subtemplates:
 
 1. Add the subtemplates as directories alongside the project templates, giving
    each directory a `subtmpl-` prefix to its name.
@@ -141,7 +140,7 @@ implied.
 
 Now when you package the 'grails-standard' project template, it will
 automatically include the 'subtmpl-controller' and 'subtmpl-domain-class'
-packages too.
+packages also.
 
 ## Advanced configuration
 
