@@ -54,15 +54,8 @@ directory. In the above example, we end up with a project template named
 'mytmpl'. For more information on what goes inside these project template
 directories, see the [Template Developers Guide](https://github.com/cbmarcum/skeletor/wiki/Template-Developers-Guide).
 
-The project structure isn't the whole story. There are three pieces of
-information that you must provide:
- 
-* the name of a Bintray repository to publish the templates to
-* the username to use when publishing them
-* the API key for that username
-
-You provide that information using a dedicated configuration block in your
-build file:
+The dedicated configuration block in the build file used for Bintray by 
+Lazybones is now depricated.
 
     lazybones {
     	repositoryName = "<user>/<repo>"      // Bintray repository
@@ -70,12 +63,8 @@ build file:
     	repositoryApiKey = "DFHWIRUEFHIWEJFNKWEJBFLWEFEFHLKDFHSLKDF"
     }
 
-(Prior to version 1.1, you had to provide a `repositoryUrl` property in place
-of `repositoryName`. This had to be a full URL of the form
-https://api.bintray.com/content/\<user\>/\<repo\>)
-
-You should ideally keep the username and API key in a separate gradle.properties
-file that doesn't get put into source control. Otherwise you're good to go.
+Likewise, the older `repositoryUrl` property is not currently used by Skeletor 
+either.
 
 ## Tasks
 
@@ -170,7 +159,7 @@ files are created.
 installed to.
 
 Since Skeletor publishing uses a manifest file and doesn't upload to
-Bintray like Lazybones did, these properties are not currenly used but left in 
+Bintray like Lazybones did, these properties are not currently used but left in 
 case they are needed for customized builds.
 
 * `licenses` - a list of license names, such as "Apache-2.0".
