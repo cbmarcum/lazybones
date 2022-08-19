@@ -76,8 +76,9 @@ as a zip file.
 * `installTemplate<TmplName>` - Copies the template package (the zip file) into
 your local Skeletor cache.
 
-* `publishTemplate<TmplName>` - Publishes the named template package to Bintray
-so that other people can use it.
+* `publishTemplate<TmplName>` - Packages named template and creates or updates 
+the `skeletor-manifest.txt` file in the build ouput alongside the packages for 
+moving to the simple URL repository so that other people can use it.
 
 The template name is derived from the corresponding directory name. The plugin
 assumes that the directory name is in lower-case hyphenated form (such as
