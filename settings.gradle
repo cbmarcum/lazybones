@@ -3,6 +3,7 @@ pluginManagement {
     * gradle looking for a jar at the location of the plugin marker pom
     * that has the dependency back to the plugin. May not be required once
     * the plugin is in the gradle plugin portal */
+    /*
     resolutionStrategy {
         eachPlugin {
             if (requested.id.namespace == 'net.codebuilders') {
@@ -10,6 +11,8 @@ pluginManagement {
             }
         }
     }
+    */
+
     repositories {
         // testing gradle plugin snapshots from local only
         // mavenLocal()
