@@ -1,4 +1,4 @@
-# Skeletor Gradle plugin
+# Skeletor Gradle Plugin
 
 The mechanics of publishing Lazybones templates is straightforward and could
 be done manually. That doesn't mean it's not a lot of work though. If you want
@@ -6,31 +6,35 @@ to manage and publish Lazybones templates, we strongly recommend you use Gradle
 along with this plugin.
 
 The plugin allows you to manage multiple templates, giving you the tools to
-package, install, and publish them individually or all together. In addition,
-since version 1.1 you can also easily set up subtemplates. Let's see how you
-use the plugin.
+package, install, and publish them individually or all together. In addition, 
+you can also easily set up subtemplates. Let's see how you use the plugin.
 
 ## Installation
 
-At the current time, the plugin is not in the Gradle plugin portal, so you have
-to set it up manually in the `buildscript` section of your build file:
+The plugin is available in the Gradle [plugin portal](https://plugins.gradle.org/plugin/net.codebuilders.lazybones-templates).
+To configure it using the plugins DSL:
+
+    plugins {
+        id "net.codebuilders.lazybones-templates" version "1.5.0"
+    }
+    ...
+or using the legacy plugin application:
 
     buildscript {
         repositories {
             maven {
-                url "https://codebuilders.jfrog.io/artifactory/cb-gradle-release-local/"
+                url "https://plugins.gradle.org/m2/"
             }
         }
-    
         dependencies {
-            classpath "net.codebuilders:skeletor-gradle:1.3.1"
+            classpath "net.codebuilders:skeletor-gradle:1.5.0"
         }
     }
 
-	apply plugin: "net.codebuilders.lazybones-templates"
+    apply plugin: "net.codebuilders.lazybones-templates"
 	...
 
-## Conventions & required configuration
+## Conventions & Required Configuration
 
 The Lazybones plugin relies on a whole set of conventions so that you can get
 started as quickly and painlessly as possible. The basic directory structure
